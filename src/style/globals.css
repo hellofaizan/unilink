@@ -46,11 +46,11 @@
   }
 
   .dark {
-    --background: oklch(0.1822 0 0);
+    --background: hsl(0 0% 9.0196%);
     --foreground: oklch(1 0 0);
 
-    --card: oklch(0.21 0 0);
-    --card-foreground: oklch(0.96 0 0);
+    --card: hsl(0, 0%, 11%);
+    --card-foreground: hsl(0 0% 100%);
 
     --popover: oklch(0.21 0 0);
     --popover-foreground: oklch(0.96 0 0);
@@ -70,8 +70,8 @@
     --destructive: oklch(0.65 0.2 19.571);
     --destructive-foreground: oklch(0.98 0 0);
 
-    --border: oklch(1 0 0 / 0.08);
-    --input: oklch(1 0 0 / 0.12);
+    --border: hsl(0 0% 16.0784%);
+    --input: hsl(0 0% 14.1176%);
     --ring: oklch(0.62 0.22 262.881);
 
     --chart-1: oklch(0.62 0.22 262.881);
