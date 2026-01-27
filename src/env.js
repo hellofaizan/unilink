@@ -2,10 +2,6 @@ import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 
 export const env = createEnv({
-  /**
-   * Specify your server-side environment variables schema here. This way you can ensure the app
-   * isn't built with invalid env vars.
-   */
   server: {
     DATABASE_URL: z.string().url(),
     NODE_ENV: z
@@ -16,10 +12,7 @@ export const env = createEnv({
         ? z.string()
         : z.string().optional(),
     NEXTAUTH_URL: z.preprocess(
-      // This makes Vercel deployments not fail if you don't set NEXTAUTH_URL
-      // Since NextAuth.js automatically uses the VERCEL_URL if present.
       (str) => process.env.VERCEL_URL ?? str,
-      // VERCEL_URL doesn't include `https` so it cant be validated as a URL
       process.env.VERCEL ? z.string() : z.string().url()
     ),
     GOOGLE_CLIENT_ID: z.string(),
@@ -33,22 +26,10 @@ export const env = createEnv({
     EMAIL_FROM: z.string().email(),
   },
 
-  /**
-   * Specify your client-side environment variables schema here. This way you can ensure the app
-   * isn't built with invalid env vars. To expose them to the client, prefix them with
-   * `NEXT_PUBLIC_`.
-   */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
-    NEXT_PUBLIC_LS_0D_VARRIENT_ID: z.string(),
-    NEXT_PUBLIC_LS_9D_VARRIENT_ID: z.string(),
-    NEXT_PUBLIC_LS_20D_VARRIENT_ID: z.string(),
   },
 
-  /**
-   * You can't destruct `process.env` as a regular object in the Next.js edge runtimes (e.g.
-   * middlewares) or client-side so we need to destruct manually.
-   */
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
@@ -61,9 +42,6 @@ export const env = createEnv({
     LEMONSQUEEZY_PRODUCT_ID: process.env.LEMONSQUEEZY_PRODUCT_ID,
     LEMONSQUEEZY_WEBHOOK_SECRET: process.env.LEMONSQUEEZY_WEBHOOK_SECRET,
     WEBHOOK_URL: process.env.WEBHOOK_URL,
-    NEXT_PUBLIC_LS_0D_VARRIENT_ID: process.env.NEXT_PUBLIC_LS_0D_VARRIENT_ID,
-    NEXT_PUBLIC_LS_9D_VARRIENT_ID: process.env.NEXT_PUBLIC_LS_9D_VARRIENT_ID,
-    NEXT_PUBLIC_LS_20D_VARRIENT_ID: process.env.NEXT_PUBLIC_LS_20D_VARRIENT_ID,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     EMAIL_FROM: process.env.EMAIL_FROM,
   },

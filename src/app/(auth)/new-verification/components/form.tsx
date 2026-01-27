@@ -9,9 +9,7 @@ import { FormSuccess } from "../../components/formsuccess";
 
 export default function VerificationForm() {
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(
-    
-  );
+  const [success, setSuccess] = useState<string | null>();
   const [disabled, setDisabled] = useState<boolean>(true);
 
   const searchParams = useSearchParams();

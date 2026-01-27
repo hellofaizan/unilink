@@ -1,11 +1,11 @@
 import NextAuth, { type DefaultSession } from "next-auth";
 import authConfig from "@/server/auth.config";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+// import { WelcomeEmail } from "@/emails/welcomeemail";
+// import { resend } from "@/lib/mail";
+import { db } from "@/lib/db";
 import { getUserById } from "./user";
 import { STATUS, USERROLE } from "@prisma/client";
-import { WelcomeEmail } from "@/emails/welcomeemail";
-import { resend } from "@/lib/mail";
-import { db } from "@/lib/db";
 
 declare module "next-auth" {
   /**
@@ -49,17 +49,19 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
       // Allow OAuth without verification
       if (account?.provider !== "credentials") {
         const existingUser = await getUserById(user.id as string);
-        if (!existingUser) {
-          const firstName = user.name?.split(" ")[0] || "there";
-          await resend.emails.send({
-            from: "Himanshu Raikwar <auth@no-reply.figscreen.com>",
-            to: user.email as string,
-            subject: `Welcome to Figscreen, ${firstName} – Let's Get Started!`,
-            react: WelcomeEmail({
-              firstName: user.name as string,
-            }),
-          });
-        }
+
+        // Email user
+        // if (!existingUser) {
+        //   const firstName = user.name?.split(" ")[0] || "there";
+        //   await resend.emails.send({
+        //     from: "Mohammad Faizan <auth@no-reply.unilink.io>",
+        //     to: user.email as string,
+        //     subject: `Welcome to Unilink, ${firstName} – Let's Get Started!`,
+        //     react: WelcomeEmail({
+        //       firstName: user.name as string,
+        //     }),
+        //   });
+        // }
         return true;
       }
 
@@ -76,7 +78,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
       if (token.role && session.user) {
         session.user.role = token.role as USERROLE;
       }
-      
+
       if (token.planStatus && session.user) {
         session.user.planStatus = token.planStatus as STATUS;
       }
