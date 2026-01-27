@@ -21,7 +21,7 @@ export const login = z.object({
   code: z.optional(z.string()),
 });
 
-export const sigrnup = z.object({
+export const signup = z.object({
   name: z
     .string()
     .min(2, {

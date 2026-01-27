@@ -6,6 +6,8 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { db } from "@/lib/db";
 import { getUserById } from "./user";
 import { STATUS, USERROLE } from "@prisma/client";
+import { resend } from "@/email/mail";
+import WelcomeEmail from "@/email/welcomeemail";
 
 declare module "next-auth" {
   /**
@@ -51,17 +53,18 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
         const existingUser = await getUserById(user.id as string);
 
         // Email user
-        // if (!existingUser) {
-        //   const firstName = user.name?.split(" ")[0] || "there";
-        //   await resend.emails.send({
-        //     from: "Mohammad Faizan <auth@no-reply.unilink.io>",
-        //     to: user.email as string,
-        //     subject: `Welcome to Unilink, ${firstName} – Let's Get Started!`,
-        //     react: WelcomeEmail({
-        //       firstName: user.name as string,
-        //     }),
-        //   });
-        // }
+        if (!existingUser) {
+          const firstName = user.name?.split(" ")[0] || "there";
+          await resend.emails.send({
+            from: process.env.EMAIL_FROM || "onboarding@resend.dev",
+            to: user.email as string,
+            subject: `Welcome to Unilink, ${firstName} – Let's Get Started!`,
+            react: WelcomeEmail({
+              firstName: user.name as string,
+            }),
+          });
+        }
+
         return true;
       }
 

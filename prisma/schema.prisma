@@ -49,8 +49,6 @@ model User {
     emailVerified         DateTime?
     joinedAt              DateTime?              @default(now())
     image                 String?
-    isTwoFactorEnabled    Boolean                @default(false)
-    twoFactorConfirmation TwoFactorConfirmation?
 
     apiToken String?    @unique
 
@@ -71,35 +69,14 @@ model Waitlist {
 
 model VerificationToken {
   id String @id @default(cuid())
-  token String
-  email String
+  token String @unique
+  email String @unique
   expires DateTime
-
-  @@unique([email, token])
 }
 
 model ResetPasswordToken {
   id String @id @default(cuid())
-  token String
-  email String
+  token String @unique
+  email String @unique
   expires DateTime
-
-  @@unique([email, token])
-}
-
-model TwoFactorToken {
-  id String @id @default(cuid())
-  token String
-  email String
-  expires DateTime
-
-  @@unique([email, token])
-}
-
-model TwoFactorConfirmation {
-    id String @id @default(cuid())
-    userId String
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    @@unique([userId])
 }

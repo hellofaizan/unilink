@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Loader, TriangleAlert } from "lucide-react";
 import { FormSuccess } from "../../components/formsuccess";
+import { newVerification } from "@/action/new-verification";
 
 export default function VerificationForm() {
   const [error, setError] = useState<string | null>(null);
@@ -14,6 +15,26 @@ export default function VerificationForm() {
 
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
+
+  const onSubmit = useCallback(() => {
+    if (!token) {
+      setError("Token not found");
+      return;
+    }
+
+    newVerification(token).then((res) => {
+      if (res && res.error) {
+        setError(res.error || "An error occurred");
+        setDisabled(false);
+      } else {
+        setSuccess(res.success || "User has been registered");
+        setDisabled(false);
+      }
+    });
+  }, []);
+  useEffect(() => {
+    onSubmit();
+  }, [onSubmit]);
 
   return (
     <div className="mx-auto border rounded-xl overflow-hidden flex flex-col items-center justify-center lg:py-0 mt-4 w-full">
@@ -38,8 +59,11 @@ export default function VerificationForm() {
               </Button>
             ) : (
               <Link href={"/login"} className="w-full">
-                <Button disabled={disabled} className="w-full mt-2">
-                  Go to Login
+                <Button
+                  disabled={disabled}
+                  className="w-full mt-2 cursor-pointer"
+                >
+                  Go back to Login
                 </Button>
               </Link>
             )}
