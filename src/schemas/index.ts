@@ -18,7 +18,6 @@ export const login = z.object({
     .max(20, {
       message: "Password must be at most 20 characters",
     }),
-  code: z.optional(z.string()),
 });
 
 export const signup = z.object({
@@ -59,4 +58,3 @@ export const resetPasswordSchema = z.object({
       message: "Password must be at most 20 characters",
     }),
 });
- 

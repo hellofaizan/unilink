@@ -18,10 +18,10 @@ export default async function LoginUser({ data }: { data: any }) {
     return { error: "Email doen't exist" };
 
   if (!existingUser.password)
-    return { error: "Email is linked to a Google account, Login with Google" };
+    return { error: "Email is linked to Google account. Login with Google" };
 
   const passwordMatch = await bcrypt.compare(password, existingUser.password);
-  if (!passwordMatch) return { error: "Invalid password, Please revalidate" };
+  if (!passwordMatch) return { error: "Invalid password, Please recheck" };
 
   if (!existingUser.emailVerified) {
     const vertoken = await generateVerificationToken(existingUser.email);
