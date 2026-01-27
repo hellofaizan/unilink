@@ -15,12 +15,48 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { FormSuccess } from "../../components/formsuccess";
+import { useForm } from "react-hook-form";
+import { forgotSchema } from "@/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ResetPass } from "@/action/resetform";
+
+type formValues = z.infer<typeof forgotSchema>;
 
 export default function form() {
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    reset,
+  } = useForm<formValues>({
+    resolver: zodResolver(forgotSchema),
+    mode: "onChange",
+  });
+
+  const onSubmit = async (data: formValues) => {
+    setDisabled(true);
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+
+    await ResetPass(data.email).then((res) => {
+      if (res && res.error) {
+        setError(res.error || "An error occurred");
+        setLoading(false);
+        setDisabled(false);
+      } else {
+        setSuccess(res.success || "Email sent successfully");
+        setLoading(false);
+        setDisabled(false);
+      }
+    });
+  };
+
   return (
     <div className="flex border rounded-xl overflow-hidden items-center justify-center mt-4">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -35,21 +71,15 @@ export default function form() {
             </p>
           </div>
 
-          <form
-            //   onSubmit={handleSubmit(onSubmit)}
-            className="space-y-3"
-          >
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             <div className="relative">
               <Input
                 type="email"
                 placeholder="Enter your email"
-                className={cn(
-                  "border",
-                  // errors.email && "border-destructive"
-                )}
-                // {...register("email")}
+                className={cn("border", errors.email && "border-destructive")}
+                {...register("email")}
               />
-              {/* {errors.email && (
+              {errors.email && (
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -57,7 +87,7 @@ export default function form() {
                         type="button"
                         className="absolute right-1 top-1/2 -translate-y-1/2 cursor-pointer rounded-md p-0.2"
                         variant="ghost"
-                        size="xs"
+                        size="icon-sm"
                       >
                         <TriangleAlert className="h-4 w-4 text-destructive" />
                       </Button>
@@ -67,7 +97,7 @@ export default function form() {
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-              )} */}
+              )}
             </div>
 
             <Button

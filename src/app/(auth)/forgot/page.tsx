@@ -1,7 +1,6 @@
 import React, { Suspense } from "react";
 import { Loader } from "lucide-react";
 
-// Dynamically import your authentication page
 const FormPage = React.lazy(() => import("./components/form"));
 
 function App() {

@@ -15,6 +15,12 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { FormSuccess } from "../../components/formsuccess";
+import { useForm } from "react-hook-form";
+import { resetPasswordSchema } from "@/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { newPassword } from "@/action/new-password";
+
+type formValues = z.infer<typeof resetPasswordSchema>;
 
 export default function ResetPasswordForm() {
   const [error, setError] = useState<string | null>(null);
@@ -26,6 +32,35 @@ export default function ResetPasswordForm() {
 
   const searchParams = useSearchParams();
   const token = searchParams.get("token") || "";
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    reset,
+  } = useForm<formValues>({
+    resolver: zodResolver(resetPasswordSchema),
+    mode: "onChange",
+  });
+
+  const onSubmit = async (data: formValues) => {
+    setDisabled(true);
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+
+    await newPassword(data.password, token).then((res) => {
+      if (res && res.error) {
+        setError(res.error || "An error occurred");
+        setLoading(false);
+        setDisabled(false);
+      } else {
+        setSuccess(res.success || "Email sent successfully");
+        setLoading(false);
+        setDisabled(false);
+      }
+    });
+  };
 
   const togglePassword = () => {
     setVisiblePassword((prev) => !prev);
@@ -57,7 +92,7 @@ export default function ResetPasswordForm() {
         <div className="my-4 h-px w-full bg-linear-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
 
         <form
-          // onSubmit={handleSubmit(onsUubmit)}
+          onSubmit={handleSubmit(onSubmit)}
           className="flex w-full flex-col items-center justify-center gap-4"
         >
           <div className="relative flex w-full items-center justify-center">
@@ -68,9 +103,9 @@ export default function ResetPasswordForm() {
                 placeholder="new password"
                 className={cn(
                   "w-full rounded-md p-2 px-3 pr-8",
-                  // errors.password && "border-destructive"
+                  errors.password && "border-destructive",
                 )}
-                //   {...register("password")}
+                {...register("password")}
               />
               <div className="flex items-center absolute right-1 top-1/2 -translate-y-1/2">
                 <button
@@ -84,7 +119,7 @@ export default function ResetPasswordForm() {
                     <EyeIcon className="h-4 w-4" />
                   )}
                 </button>
-                {/* {errors.password && (
+                {errors.password && (
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -102,7 +137,7 @@ export default function ResetPasswordForm() {
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
-                )} */}
+                )}
               </div>
             </div>
           </div>
