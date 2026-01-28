@@ -31,10 +31,12 @@ export default function Navbar() {
         <p className="hidden md:flex cursor-pointer hover:underline hover:text-primary">
           pricing
         </p>
-        <p className="hidden md:flex items-center gap-0.5 cursor-pointer hover:underline hover:text-primary">
-          <LucideInfo size={14} />
-          help
-        </p>
+        <Link href={"/help"} target="_blank" className="hidden md:flex">
+          <p className="hidden md:flex items-center gap-0.5 cursor-pointer hover:underline hover:text-primary">
+            <LucideInfo size={14} />
+            help
+          </p>
+        </Link>
         <Link
           href={"https://dub.sh/unilinkdc"}
           target="_blank"
@@ -44,14 +46,14 @@ export default function Navbar() {
             discord
           </p>
         </Link>
+        <div className="hidden md:flex">
+          <ModeToggle />
+        </div>
         <Link href={"/register"}>
           <Button size={"lg"} variant={"gradient"}>
             GET STARTED
           </Button>
         </Link>
-        <div className="hidden md:flex">
-          <ModeToggle />
-        </div>
       </div>
     </div>
   );

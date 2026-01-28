@@ -30,7 +30,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} h-screen flex flex-col`}
       >
         <ThemeProvider attribute={"class"} defaultTheme="system" enableSystem>
-          <Navbar />
           {children}
         </ThemeProvider>
       </body>
