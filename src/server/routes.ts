@@ -8,6 +8,7 @@ export const publicRoutes: string[] = [
   "/about",
   "/contact",
   "/explore",
+  "/pricing",
   "/:path*",
   "/new-verification",
 ];
@@ -35,7 +36,13 @@ export const apiAuthPrefix: string = "/api/auth";
  * An array of routes that are protected and require authentication
  * @type {string[]}
  */
-export const protectedRoutes: string[] = ["/dashboard", "/dashboard/user", "/dashboard/analytics", "/dashboard/settings", "dashboard/billing"];
+export const protectedRoutes: string[] = [
+  "/dashboard",
+  "/dashboard/user",
+  "/dashboard/analytics",
+  "/dashboard/settings",
+  "dashboard/billing",
+];
 
 /**
  * An array of routes that are protected and require authentication
