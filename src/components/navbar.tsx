@@ -6,6 +6,15 @@ import Image from "next/image";
 import { ModeToggle } from "./mode-toggle";
 import { LucideInfo } from "lucide-react";
 import { useTheme } from "next-themes";
+import CTAButton from "./cta-button";
+import { Gugi } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const gugi = Gugi({
+  weight: ["400"],
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export default function Navbar() {
   const { theme } = useTheme();
@@ -19,18 +28,20 @@ export default function Navbar() {
               : "/logos/logo_white.png"
           }
           alt="Unilink"
-          height={40}
-          width={40}
+          height={35}
+          width={35}
           priority
           unoptimized
         />
-        <p className="font-medium text-2xl">UNILINK</p>
+        <p className={cn(`font-medium text-3xl`, gugi.className)}>UNILINK</p>
       </div>
 
       <div className="flex items-center gap-4">
-        <p className="hidden md:flex cursor-pointer hover:underline hover:text-primary">
-          pricing
-        </p>
+        <Link href={"/pricing"} className="hidden md:flex">
+          <p className="hidden md:flex cursor-pointer hover:underline hover:text-primary">
+            pricing
+          </p>
+        </Link>
         <Link href={"/help"} target="_blank" className="hidden md:flex">
           <p className="hidden md:flex items-center gap-0.5 cursor-pointer hover:underline hover:text-primary">
             <LucideInfo size={14} />
@@ -49,11 +60,8 @@ export default function Navbar() {
         <div className="hidden md:flex">
           <ModeToggle />
         </div>
-        <Link href={"/register"}>
-          <Button size={"lg"} variant={"gradient"}>
-            GET STARTED
-          </Button>
-        </Link>
+
+        <CTAButton />
       </div>
     </div>
   );

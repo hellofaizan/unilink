@@ -15,15 +15,12 @@ export default function AuthLayout({
           <div className="flex flex-col w-full max-w-100 mx-auto">
             {/* Logo Container */}
             <div className="flex items-center text-primary text-4xl font-medium justify-center">
-              unilink
               <Image
-                src={"/logos/logo_blue.png"}
-                alt="unilink logo"
-                width={30}
-                height={30}
-                className="object-contain text-primary"
-                priority
-                unoptimized
+                src={"/logos/banner.svg"}
+                alt="Unilink Logo"
+                className="w-52"
+                height={0}
+                width={0}
               />
             </div>
             <div className="rounded-xl overflow-hidden">{children}</div>
