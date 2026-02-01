@@ -11,7 +11,7 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const session = await auth();
-  // const user = await userData(session?.user.id as string);
+  const user = await userData(session?.user.id as string);
 
   return (
     <SessionProvider session={session}>

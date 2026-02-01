@@ -40,7 +40,7 @@ export default function SettingsNav({
           } transition-colors`}
         >
           <Cog className="w-4 h-4" />
-          Profile
+          Security
         </button>
       </nav>
     </div>

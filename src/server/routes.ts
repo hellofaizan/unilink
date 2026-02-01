@@ -38,9 +38,8 @@ export const apiAuthPrefix: string = "/api/auth";
  */
 export const protectedRoutes: string[] = [
   "/dashboard",
-  "/dashboard/user",
   "/dashboard/analytics",
-  "/dashboard/settings",
+  "/dashboard/profile",
   "dashboard/billing",
 ];
 
@@ -54,4 +53,4 @@ export const adminRoutes: string[] = ["/admin"];
  * The default route to redirect to after login
  * @type {string}
  */
-export const DEFAULT_LOGIN_REDIRECT = "/";
+export const DEFAULT_LOGIN_REDIRECT: string = "/dashboard";

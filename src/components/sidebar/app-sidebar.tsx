@@ -4,24 +4,21 @@ import * as React from "react";
 import {
   LayoutDashboard,
   Settings,
-  BarChart,
-  Key,
   LogOut,
   CreditCard,
   Menu,
   Lock,
   MessageCircle,
   X,
-  Puzzle,
   LinkIcon,
   Heart,
   ChartColumn,
   ChevronRight,
+  UserPen,
 } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
-  SidebarRail,
   useSidebar,
 } from "../ui/sidebar";
 import Link from "next/link";
@@ -54,9 +51,9 @@ const routes = [
     href: "/dashboard/analytics",
   },
   {
-    label: "Settings",
-    icon: Settings,
-    href: "/dashboard/settings",
+    label: "Profile",
+    icon: UserPen,
+    href: "/dashboard/profile",
   },
 ];
 
@@ -105,10 +102,10 @@ export function AppSidebar({ ...props }) {
                 <Link
                   href={"/dashboard/admin"}
                   className={cn(
-                    "flex items-center gap-x2=-3 text-sm py-2.5 px-3 rounded-lg relative transition-all",
+                    "flex items-center gap-x-3 text-sm py-2.5 px-3 rounded-lg relative transition-all",
                     path === "/dashboard/admin"
-                      ? "text-sidebar-foreground bg-muted"
-                      : "text-muted-foreground hover:bg-muted",
+                      ? "text-sidebar-foreground bg-border"
+                      : "text-muted-foreground hover:bg-border",
                   )}
                   prefetch={false}
                 >
@@ -122,7 +119,6 @@ export function AppSidebar({ ...props }) {
 
               {routes.map((route) => {
                 const isActive = path === route.href;
-                console.log(isActive, path);
                 return (
                   <Link
                     key={route.href || route.label}
@@ -130,8 +126,8 @@ export function AppSidebar({ ...props }) {
                     className={cn(
                       "flex items-center gap-x-3 text-sm py-2.5 px-3 rounded-lg relative transition-all",
                       isActive
-                        ? "text-sidebar-foreground bg-muted"
-                        : "text-muted-foreground hover:bg-muted",
+                        ? "text-sidebar-foreground bg-border"
+                        : "text-muted-foreground hover:bg-border",
                     )}
                     prefetch={false}
                   >
