@@ -40,6 +40,7 @@ model Account {
 
 model User {
   id            String    @id @default(cuid())
+  uuid          Int       @default(autoincrement())
   name          String?
   role          USERROLE  @default(USER)
   email         String    @unique

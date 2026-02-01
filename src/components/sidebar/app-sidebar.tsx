@@ -16,6 +16,7 @@ import {
   LinkIcon,
   Heart,
   ChartColumn,
+  ChevronRight,
 } from "lucide-react";
 import {
   Sidebar,
@@ -29,6 +30,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
 import { Button } from "../ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const routes = [
   {
@@ -61,7 +63,8 @@ const routes = [
 export function AppSidebar({ ...props }) {
   const path = usePathname();
   const { setExpanded, isMobile } = useSidebar();
-  const role = props.user.role;
+  const user = props.user;
+  const role = user.role;
 
   const handleJoinDiscord = () => {
     window.open("https://dub.sh/unilinkdc", "_blank");
@@ -71,7 +74,7 @@ export function AppSidebar({ ...props }) {
     <>
       <Sidebar {...props}>
         <SidebarContent className="flex flex-col h-full border">
-          <div className="border-b max-h-32 px-6 py-6 flex items-center justify-between">
+          <div className="border-b p-4 flex items-center justify-betwee h-28">
             <Link href="/dashboard">
               <div className="flex items-cente">
                 <Image
@@ -119,7 +122,7 @@ export function AppSidebar({ ...props }) {
 
               {routes.map((route) => {
                 const isActive = path === route.href;
-                console.log(isActive, path)
+                console.log(isActive, path);
                 return (
                   <Link
                     key={route.href || route.label}
@@ -153,7 +156,7 @@ export function AppSidebar({ ...props }) {
           <div className="mt-auto border-t border">
             <button
               onClick={handleJoinDiscord}
-              className="flex items-center gap-x-3 text-sm py-3 px-6 w-full hover:bg-muted hover:text-muted-foreground transition-all"
+              className="cursor-pointer flex items-center gap-x-3 text-sm py-3 px-6 w-full hover:bg-muted hover:text-muted-foreground transition-all"
             >
               <MessageCircle className="h-5 w-5" />
               <span className="font-medium">Join Discord</span>
@@ -161,11 +164,25 @@ export function AppSidebar({ ...props }) {
 
             <button
               onClick={() => signOut({ callbackUrl: "/dashboard" })}
-              className="flex items-center gap-x-3 text-sm py-3 px-6 w-full hover:bg-muted hover:text-muted-foreground transition-all"
+              className="cursor-pointer flex items-center gap-x-3 text-sm py-3 px-6 w-full hover:bg-muted hover:text-muted-foreground transition-all"
             >
               <LogOut className="h-5 w-5" />
               <span className="font-medium">Log out</span>
             </button>
+
+            <div className="flex shrink-0 items-center space-x-4 p-3">
+              <Avatar>
+                <AvatarImage src={user.image} />
+                <AvatarFallback>UNI</AvatarFallback>
+              </Avatar>
+              <div className="flex-1 space-y-1">
+                <p className="text-sm font-medium leading-none">
+                  {user.name as string}
+                </p>
+                <p className="text-xs text-muted-foregroun">{user.email}</p>
+              </div>
+              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+            </div>
           </div>
         </SidebarContent>
       </Sidebar>

@@ -11,13 +11,13 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const session = await auth();
-  const user = await userData(session?.user.id as string);
+  // const user = await userData(session?.user.id as string);
 
   return (
     <SessionProvider session={session}>
       <SidebarProvider>
         <div className="flex min-h-screen">
-          <AppSidebar user={user} />
+          <AppSidebar user={session?.user} />
           <SidebarInset className="flex min-h-screen">
             <main className="flex-1 min-h-screen px-4 py-6 md:px-8">
               {children}
