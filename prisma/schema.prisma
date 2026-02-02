@@ -41,13 +41,17 @@ model Account {
 model User {
   id            String    @id @default(cuid())
   uuid          Int       @default(autoincrement())
-  name          String?
+  name          String
+  bio           String?
   role          USERROLE  @default(USER)
   email         String    @unique
   password      String?
   emailVerified DateTime?
   joinedAt      DateTime? @default(now())
   image         String?
+
+  username          String?   @unique @db.VarChar(20)
+  usernameChangedAt DateTime?
 
   apiToken String? @unique
 

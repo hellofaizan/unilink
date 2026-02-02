@@ -17,7 +17,7 @@ export default function SettingsNav({
   const pathname = usePathname();
 
   return (
-    <div className="border-b mb-8">
+    <div className="border-b mb-4">
       <nav className="flex gap-6 -mb-px">
         <button
           onClick={() => onTabChange("profile")}

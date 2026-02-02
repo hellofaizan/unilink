@@ -26,8 +26,8 @@ export const signup = z.object({
     .min(2, {
       message: "Name must be at least 2 characters",
     })
-    .max(25, {
-      message: "Name must be at most 25 characters",
+    .max(30, {
+      message: "Name must be at most 30 characters",
     }),
   email: z.email({
     message: "Invalid email address",
@@ -57,4 +57,17 @@ export const resetPasswordSchema = z.object({
     .max(20, {
       message: "Password must be at most 20 characters",
     }),
+});
+
+export const UpdateProfileSchema = z.object({
+  name: z.string().min(1, "Name is required").max(30).optional(),
+  bio: z.string().max(50).optional(),
+  username: z
+    .string()
+    .min(1, "Username must be atleast 1 character")
+    .max(20)
+    .regex(/^[a-zA-Z0-9_]{1,20}$/, {
+      message: "Spaces and special characters are not allowed",
+    })
+    .optional(),
 });

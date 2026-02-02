@@ -16,6 +16,8 @@ declare module "next-auth" {
   interface Session {
     user: {
       /** The user's postal address. */
+      bio: string;
+      username: string;
       role: USERROLE;
       planStatus: STATUS;
       joinedAt: string;
@@ -78,6 +80,15 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
       if (token.sub && session.user) {
         session.user.id = token.sub;
       }
+
+      if (token.bio && session.user) {
+        session.user.bio = token.bio as string;
+      }
+
+      if (token.username && session.user) {
+        session.user.username = token.username as string;
+      }
+
       if (token.role && session.user) {
         session.user.role = token.role as USERROLE;
       }
@@ -110,6 +121,8 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
 
       if (!existingUser) return token;
 
+      token.username = existingUser.username;
+      token.bio = existingUser.bio;
       token.role = existingUser.role;
       token.planStatus = existingUser.planStatus;
       token.joinedAt = existingUser.joinedAt;

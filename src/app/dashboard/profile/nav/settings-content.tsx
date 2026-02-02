@@ -1,7 +1,5 @@
-"use client";
-
 import { User } from "@prisma/client";
-import PersonalDetails from "./PersonalDetails";
+import PersonalDetails from "../components/PersonalDetails";
 
 interface SettingsContentProps {
   user: User | null;

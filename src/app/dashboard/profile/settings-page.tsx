@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import SettingsNav from "./components/settings-nav";
-import SettingsContent from "./components/settings-content";
+import React, { useState } from "react";
+import SettingsNav from "./nav/settings-nav";
+import SettingsContent from "./nav/settings-content";
 
 export default function SettingsPageClient({ user }: any) {
   const [activeTab, setActiveTab] = useState("profile");
@@ -14,7 +14,7 @@ export default function SettingsPageClient({ user }: any) {
 
   return (
     <div className="md:p-8 max-w-300 mx-auto">
-      <div className="flex flex-col gap-1 5 mb-8">
+      <div className="flex flex-col gap-1 5 mb-5">
         <p className="text-2xl font-medium">Profile Settings</p>
         <p className="text-muted-foreground">
           Manage your account details, security and connected services

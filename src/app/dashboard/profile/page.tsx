@@ -5,10 +5,11 @@ import SettingsPageClient from "./settings-page";
 
 export default async function SettingsPage() {
   const session = await auth();
+  const user = session?.user?.id ? await getUserById(session.user.id) : null;
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <SettingsPageClient user={session?.user} />
+      <SettingsPageClient user={user} />
     </Suspense>
   );
 }

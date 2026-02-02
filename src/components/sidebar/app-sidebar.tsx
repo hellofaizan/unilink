@@ -1,11 +1,8 @@
 "use client";
 
-import * as React from "react";
 import {
   LayoutDashboard,
-  Settings,
   LogOut,
-  CreditCard,
   Menu,
   Lock,
   MessageCircle,
@@ -16,18 +13,13 @@ import {
   ChevronRight,
   UserPen,
 } from "lucide-react";
-import {
-  Sidebar,
-  SidebarContent,
-  useSidebar,
-} from "../ui/sidebar";
+import { Sidebar, SidebarContent, useSidebar } from "../ui/sidebar";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
 import { Button } from "../ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const routes = [
   {
@@ -166,11 +158,14 @@ export function AppSidebar({ ...props }) {
               <span className="font-medium">Log out</span>
             </button>
 
-            <div className="flex shrink-0 items-center space-x-4 p-3">
-              <Avatar>
-                <AvatarImage src={user.image} />
-                <AvatarFallback>UNI</AvatarFallback>
-              </Avatar>
+            <div className="flex shrink-0 items-center space-x-3 p-2">
+              <Image
+                alt={user?.name as string}
+                src={user?.image as string}
+                className="rounded-full border"
+                width={40}
+                height={40}
+              />
               <div className="flex-1 space-y-1">
                 <p className="text-sm font-medium leading-none">
                   {user.name as string}

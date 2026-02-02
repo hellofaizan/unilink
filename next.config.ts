@@ -9,6 +9,8 @@ const nextConfig: NextConfig = {
         hostname: "lh3.googleusercontent.com",
       },
     ],
+    minimumCacheTTL: 60,
+    formats: ["image/webp", "image/avif"],
   },
 };
 

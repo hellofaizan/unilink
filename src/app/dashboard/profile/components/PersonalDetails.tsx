@@ -1,7 +1,7 @@
-import React from "react";
 import { User } from "@prisma/client";
 import z from "zod";
 import GetVerifiedBanner from "@/components/get-verified";
+import GeneralSettings from "./generalSettings";
 
 const updateData = z.object({
   name: z.string().min(1, "Name is required").max(25, {
@@ -18,8 +18,9 @@ interface PersonalDataProps {
 
 export default function PersonalDetails({ user }: PersonalDataProps) {
   return (
-    <div className="">
-      <GetVerifiedBanner user={user} />{" "}
+    <div className="flex flex-col gap-6">
+      {user?.role === "USER" && <GetVerifiedBanner user={user} />}
+      <GeneralSettings user={user} />
     </div>
   );
 }
