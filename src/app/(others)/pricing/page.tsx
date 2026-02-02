@@ -122,6 +122,7 @@ export default function page() {
             <Button
               type="button"
               size={"lg"}
+              variant={"gradient"}
               className="text-sm uppercase w-full py-2 rounded-lg font-medium mt-7 transition-all cursor-pointer"
             >
               Get Started

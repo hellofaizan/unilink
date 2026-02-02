@@ -19,6 +19,7 @@ export default function AuthLayout({
                 src={"/logos/banner.svg"}
                 alt="Unilink Logo"
                 className="w-52"
+                priority
                 height={0}
                 width={0}
               />
