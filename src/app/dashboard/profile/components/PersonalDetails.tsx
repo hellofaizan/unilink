@@ -19,7 +19,6 @@ interface PersonalDataProps {
 export default function PersonalDetails({ user }: PersonalDataProps) {
   return (
     <div className="flex flex-col gap-6">
-      {user?.role === "USER" && <GetVerifiedBanner user={user} />}
       <GeneralSettings user={user} />
     </div>
   );

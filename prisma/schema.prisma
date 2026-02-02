@@ -49,6 +49,7 @@ model User {
   emailVerified DateTime?
   joinedAt      DateTime? @default(now())
   image         String?
+  imageKey      String?
 
   username          String?   @unique @db.VarChar(20)
   usernameChangedAt DateTime?

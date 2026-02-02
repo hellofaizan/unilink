@@ -4,12 +4,6 @@ import UpdateProfile from "@/action/updatebio";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { getProfileErrorMessage } from "@/lib/errors/error-message";
 import { UpdateProfileResult } from "@/lib/errors/profile-error";
 import { cn } from "@/lib/utils";
@@ -27,6 +21,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import ImageUploadComponent from "./imageUpload";
 
 type formValues = z.infer<typeof UpdateProfileSchema>;
 
@@ -150,26 +145,8 @@ export default function GeneralSettings({ user }: GeneralSettingsProps) {
         This is how visiotrs will see your presence online.
       </span>
 
-      <div className="flex gap-2 items-center border px-4 py-6 rounded-lg bg-border/30 mt-5">
-        <Image
-          alt={user?.name as string}
-          src={user?.image as string}
-          className="rounded-full border"
-          width={70}
-          height={70}
-        />
-        <div className="flex flex-col gap-1">
-          <span className="text-xs text-muted-foreground">
-            Upload a new profile picture (Max 1MB)
-          </span>
-          <Button
-            className="w-max text-xs font-medium cursor-pointer"
-            size={"sm"}
-          >
-            Choose File
-          </Button>
-        </div>
-      </div>
+      <ImageUploadComponent user={user} />
+
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
         <div className="space-y-4">
           <div className="flex flex-col gap-1">
@@ -287,6 +264,7 @@ export default function GeneralSettings({ user }: GeneralSettingsProps) {
           <Button
             type="submit"
             disabled={loading || disabled}
+            variant={"gradient"}
             className="h-10 px-6 cursor-pointer"
           >
             {loading ? (

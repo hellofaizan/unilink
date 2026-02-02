@@ -13,7 +13,7 @@ export const env = createEnv({
         : z.string().optional(),
     NEXTAUTH_URL: z.preprocess(
       (str) => process.env.VERCEL_URL ?? str,
-      process.env.VERCEL ? z.string() : z.string().url()
+      process.env.VERCEL ? z.string() : z.string().url(),
     ),
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
@@ -23,7 +23,8 @@ export const env = createEnv({
     LEMONSQUEEZY_WEBHOOK_SECRET: z.string(),
     WEBHOOK_URL: z.string().url(),
     RESEND_API_KEY: z.string(),
-    EMAIL_FROM: z.string().email(),
+    EMAIL_FROM: z.email(),
+    UPLOADTHING_TOKEN: z.string(),
   },
 
   client: {
@@ -44,6 +45,7 @@ export const env = createEnv({
     WEBHOOK_URL: process.env.WEBHOOK_URL,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     EMAIL_FROM: process.env.EMAIL_FROM,
+    UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

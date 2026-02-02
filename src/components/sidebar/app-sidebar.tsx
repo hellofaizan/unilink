@@ -12,6 +12,7 @@ import {
   ChartColumn,
   ChevronRight,
   UserPen,
+  Mail,
 } from "lucide-react";
 import { Sidebar, SidebarContent, useSidebar } from "../ui/sidebar";
 import Link from "next/link";
@@ -20,6 +21,8 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
 import { Button } from "../ui/button";
+import { Avatar, AvatarFallback } from "../ui/avatar";
+import { Suspense } from "react";
 
 const routes = [
   {
@@ -36,6 +39,11 @@ const routes = [
     label: "Socials",
     icon: Heart,
     href: "/dashboard/socials",
+  },
+  {
+    label: "Emails",
+    icon: Mail,
+    href: "/dashboard/emails",
   },
   {
     label: "Ananlytics",
@@ -141,10 +149,10 @@ export function AppSidebar({ ...props }) {
             </nav>
           </div>
 
-          <div className="mt-auto border-t border">
+          <div className="mt-auto border-t rounded-lg overflow-hidden">
             <button
               onClick={handleJoinDiscord}
-              className="cursor-pointer flex items-center gap-x-3 text-sm py-3 px-6 w-full hover:bg-muted hover:text-muted-foreground transition-all"
+              className="cursor-pointer h-14 flex items-center gap-x-3 text-sm py-3 px-6 w-full hover:bg-muted hover:text-muted-foreground transition-all"
             >
               <MessageCircle className="h-5 w-5" />
               <span className="font-medium">Join Discord</span>
@@ -152,20 +160,24 @@ export function AppSidebar({ ...props }) {
 
             <button
               onClick={() => signOut({ callbackUrl: "/dashboard" })}
-              className="cursor-pointer flex items-center gap-x-3 text-sm py-3 px-6 w-full hover:bg-muted hover:text-muted-foreground transition-all"
+              className="cursor-pointer h-14 flex items-center gap-x-3 text-sm py-3 px-6 w-full hover:bg-muted hover:text-muted-foreground transition-all"
             >
               <LogOut className="h-5 w-5" />
               <span className="font-medium">Log out</span>
             </button>
 
             <div className="flex shrink-0 items-center space-x-3 p-2">
-              <Image
-                alt={user?.name as string}
-                src={user?.image as string}
-                className="rounded-full border"
-                width={40}
-                height={40}
-              />
+              <Avatar className="h-auto w-auto">
+                <Suspense fallback={<AvatarFallback>UNI</AvatarFallback>}>
+                  <Image
+                    alt={user?.name as string}
+                    src={user?.image as string}
+                    className="rounded-full border"
+                    width={40}
+                    height={40}
+                  />
+                </Suspense>
+              </Avatar>
               <div className="flex-1 space-y-1">
                 <p className="text-sm font-medium leading-none">
                   {user.name as string}
