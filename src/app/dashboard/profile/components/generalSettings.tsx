@@ -58,6 +58,7 @@ export default function GeneralSettings({ user }: GeneralSettingsProps) {
   const initialValues = {
     name: user?.name || "",
     bio: user?.bio || "",
+    username: user?.username || ""
   };
   const watchedName = watch("name");
   const watchedBio = watch("bio");
@@ -98,11 +99,11 @@ export default function GeneralSettings({ user }: GeneralSettingsProps) {
     const hasChanges =
       watchedName !== initialValues.name ||
       watchedBio !== initialValues.bio ||
-      watchedUsername !== user?.username;
+      watchedUsername !== initialValues.username;
 
     const usernameBlocked = Boolean(
       watchedUsername &&
-      watchedUsername !== user?.username &&
+      watchedUsername !== initialValues.username &&
       usernameAvailable === false,
     );
 

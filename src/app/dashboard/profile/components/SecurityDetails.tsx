@@ -2,6 +2,7 @@ import { User } from "@prisma/client";
 import { AlertTriangle } from "lucide-react";
 import React from "react";
 import DeleteAccount from "./deleteAccount";
+import ChangePasswordComponent from "./changePassword";
 
 interface UserDataProps {
   user: User | null;
@@ -9,18 +10,22 @@ interface UserDataProps {
 
 export default function SecurityDetails({ user }: UserDataProps) {
   return (
-    <div className="mt-12 border-t pt-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="text-lg font-medium text-destructive flex items-center gap-2">
-            <AlertTriangle className="w-5 h-5" />
-            Delete account
-          </h3>
-          <p className="text-sm text-muted-foreground">
-            Permanently remove your account from Unilink
-          </p>
+    <div className="flex flex-col gap-6">
+      <ChangePasswordComponent user={user} />
+
+      <div className="mt-6 border-t pt-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-lg font-medium text-destructive flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5" />
+              Delete account
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Permanently remove your account from Unilink
+            </p>
+          </div>
+          <DeleteAccount user={user} />
         </div>
-        <DeleteAccount user={user} />
       </div>
     </div>
   );

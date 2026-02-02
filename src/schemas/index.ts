@@ -17,6 +17,9 @@ export const login = z.object({
     })
     .max(20, {
       message: "Password must be at most 20 characters",
+    })
+    .regex(/^[a-zA-Z0-9_@]*$/, {
+      message: "Only alphabets, underscore and @ allowed in password",
     }),
 });
 
@@ -39,6 +42,9 @@ export const signup = z.object({
     })
     .max(20, {
       message: "Password must be at most 20 characters",
+    })
+    .regex(/^[a-zA-Z0-9_@]*$/, {
+      message: "Only alphabets, underscore and @ allowed in password",
     }),
 });
 
@@ -56,6 +62,23 @@ export const resetPasswordSchema = z.object({
     })
     .max(20, {
       message: "Password must be at most 20 characters",
+    })
+    .regex(/^[a-zA-Z0-9_@]*$/, {
+      message: "Only alphabets, underscore and @ allowed in password",
+    }),
+});
+
+export const ChangePasswordSchema = z.object({
+  password: z
+    .string()
+    .min(6, {
+      message: "Password must be at least 6 characters",
+    })
+    .max(20, {
+      message: "Password must be at most 20 characters",
+    })
+    .regex(/^[a-zA-Z0-9_@]*$/, {
+      message: "Only alphabets, underscore and @ allowed in password",
     }),
 });
 
