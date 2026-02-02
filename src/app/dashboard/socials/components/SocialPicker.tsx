@@ -8,11 +8,13 @@ import { AddSocialModal } from "./addSocialModel";
 export function SocialPicker() {
   return (
     <div>
-      <div className="flex flex-wrap gap-4">
-        {SOCIAL_PLATFORMS.map((social) => (
-          <AddSocialModal key={social.id} social={social}>
-            <SocialIcon social={social} />
-          </AddSocialModal>
+      <div className="flex flex-wrap gap-3">
+        {SOCIAL_PLATFORMS.map((social, index) => (
+          <div key={index}>
+            <AddSocialModal social={social}>
+              <SocialIcon social={social} />
+            </AddSocialModal>
+          </div>
         ))}
       </div>
     </div>

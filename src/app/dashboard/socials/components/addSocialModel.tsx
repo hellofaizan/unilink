@@ -16,6 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface Props {
   social: SocialPlatform;
@@ -24,11 +25,12 @@ interface Props {
 
 export function AddSocialModal({ social, children }: Props) {
   const [username, setUsername] = useState<string | "">("");
+  const [customUrl, setCustomUrl] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [error, setError] = useState<string | "">("");
 
-  const fullUrl = username ? `${social.baseUrl}${username}` : social.baseUrl;
+  const isCustom = social.isCustom;
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -37,39 +39,64 @@ export function AddSocialModal({ social, children }: Props) {
           <DialogTitle className="flex items-center gap-2">
             Add {social.name} Social
           </DialogTitle>
-          <div className="space-y-4 pt-2 text-sm text-muted-foreground">
-            <p>Enter your {social.name} username to link your profile.</p>
-
-            <form className="space-y-4">
-              <div className="flex flex-col">
-                <div className="flex border rounded-lg bg-input px-2">
-                  <Image
-                    src={social.icon}
-                    alt={social.name}
-                    width={28}
-                    height={28}
-                  />
-                  <span className="flex flex-none items-center justify-center pl-2 text-sm w-max">
-                    {social.baseUrl}
-                  </span>
-                  <Input
-                    type="text"
-                    placeholder="...."
-                    className="peer h-10 border-0 bg-none px-0 text-foreground flex-1"
-                    value={username}
-                    onChange={(e) => {
-                      setUsername(e.target.value);
-                      setError("");
-                    }}
-                    disabled={loading}
-                  />
-                </div>
-
-                {error && (
-                  <p className="text-xs text-destructive mt-2">{error}</p>
-                )}
-              </div>
-            </form>
+          <div className="space-y-4 pt-2">
+            {isCustom ? (
+              <>
+                <p className="text-sm text-muted-foreground">
+                  Save a custom Url.
+                </p>
+                <form /*onSubmit={handleSubmit}*/ className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="custom-url">URL</Label>
+                    <Input
+                      id="custom-url"
+                      className="h-10"
+                      placeholder="https://example.com"
+                      value={customUrl}
+                      onChange={(e) => {
+                        setCustomUrl(e.target.value);
+                        setError("");
+                      }}
+                      disabled={loading}
+                      type="url"
+                    />
+                    {error && (
+                      <p className="text-xs text-destructive mt-2">{error}</p>
+                    )}
+                  </div>
+                </form>
+              </>
+            ) : (
+              <>
+                <p className="text-sm text-muted-foreground">
+                  Enter your {social.name} username or handle to link your
+                  profile.
+                </p>
+                <form /*onSubmit={handleSubmit}*/ className="space-y-4">
+                  <div>
+                    <Input
+                      className="h-10"
+                      placeholder={`Enter your ${social.name} username`}
+                      value={username}
+                      onChange={(e) => {
+                        setUsername(e.target.value);
+                        setError("");
+                      }}
+                      disabled={loading}
+                    />
+                    {error && (
+                      <p className="text-xs text-destructive mt-2">{error}</p>
+                    )}
+                    {username && (
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Preview: https://{social.baseUrl}
+                        {username}
+                      </p>
+                    )}
+                  </div>
+                </form>
+              </>
+            )}
           </div>
         </DialogHeader>
         <DialogFooter className="mt-2">
