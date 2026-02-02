@@ -19,7 +19,7 @@ export default function ImageUploadComponent({ user }: GeneralSettingsProps) {
     user?.image || null,
   );
   const [avatarLoading, setAvatarLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>("jawvdjhawd nv");
+  const [error, setError] = useState<string | null>("");
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const { startUpload } = useUploadThing("imageUploader", {
     onUploadProgress(p) {
@@ -65,12 +65,12 @@ export default function ImageUploadComponent({ user }: GeneralSettingsProps) {
         throw new Error("DB_UPDATE_FAILED");
       }
 
-      toast("Image uploaded successfully!");
+      toast.success("Image uploaded successfully!", { position: "top-center" });
     } catch {
       setError("Failed to upload profile picture.");
       setAvatarPreview(user?.image || "");
 
-      toast("Something went wrong!");
+      toast.error("Something went wrong!", { position: "top-center" });
     } finally {
       setAvatarLoading(false);
       setUploadProgress(0);
@@ -96,27 +96,34 @@ export default function ImageUploadComponent({ user }: GeneralSettingsProps) {
         <span className="text-xs text-muted-foreground">
           Upload a new profile picture (Max 1MB)
         </span>
-        <input
-          id="fileUpload"
-          type="file"
-          accept="image/*"
-          ref={fileInputRef}
-          hidden
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (file) onAvatarSelect(file);
-          }}
-        />
-        <Button
-          type="button"
-          className="w-max text-xs font-medium cursor-pointer"
-          size="sm"
-          variant={"gradient"}
-          disabled={avatarLoading}
-          onClick={() => fileInputRef.current?.click()}
-        >
-          {avatarLoading ? "Uploading..." : "Choose File"}
-        </Button>
+        <div className="flex items-center">
+          <input
+            id="fileUpload"
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            hidden
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) onAvatarSelect(file);
+            }}
+          />
+          <Button
+            type="button"
+            className="w-max text-xs font-medium cursor-pointer"
+            size="sm"
+            variant={"gradient"}
+            disabled={avatarLoading}
+            onClick={() => fileInputRef.current?.click()}
+          >
+            {avatarLoading ? "Uploading..." : "Choose File"}
+          </Button>
+          {error && (
+            <p className="text-xs text-destructive bg-destructive/10 p-2.5 rounded-lg ml-2">
+              {error}
+            </p>
+          )}
+        </div>
       </div>
 
       <div

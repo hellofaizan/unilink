@@ -4,6 +4,7 @@ import "../style/globals.css";
 import Navbar from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SessionProvider } from "next-auth/react";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ export default function RootLayout({
       >
         <SessionProvider>
           <ThemeProvider attribute={"class"} defaultTheme="system" enableSystem>
+            <Toaster />
             {children}
           </ThemeProvider>
         </SessionProvider>

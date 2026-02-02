@@ -1,6 +1,7 @@
 import { User } from "@prisma/client";
 import PersonalDetails from "../components/PersonalDetails";
 import GetVerifiedBanner from "@/components/get-verified";
+import SecurityDetails from "../components/SecurityDetails";
 
 interface SettingsContentProps {
   user: User | null;
@@ -32,7 +33,7 @@ export default function SettingsContent({
         }`}
       >
         {user?.planStatus === "FREE_PLAN" && <GetVerifiedBanner user={user} />}
-        change pasword
+        <SecurityDetails user={user} />
       </div>
     </div>
   );

@@ -10,11 +10,11 @@ export async function UploadAvatar(imageUrl: string, imageKey: string) {
   const user = await currentUser();
 
   if (!user?.id) {
-    return { success: false, error: "UNAUTHORIZED" };
+    return { success: false, error: "You are not authorized" };
   }
 
   if (!imageUrl || typeof imageUrl !== "string") {
-    return { success: false, error: "INVALID_IMAGE" };
+    return { success: false, error: "Something went wrong!" };
   }
 
   const dbUser = await db.user.findUnique({

@@ -16,7 +16,9 @@ export const RoleGate = ({ children, allowedRoles }: RoleGateProps) => {
   const role = useCurrentRole();
 
   if (role !== allowedRoles) {
-    toast("You cant access this page! Go back");
+    toast.error("You cant access this page! Go back", {
+      position: "top-center",
+    });
     return (
       <main className="flex min-h-100 flex-col items-center justify-center space-y-10 text-center md:min-h-dvh">
         <Skull size={100} className="text-red-500" />
