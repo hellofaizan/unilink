@@ -1,6 +1,7 @@
 import { mapLinksToCards } from "@/app/dashboard/socials/types/mapper";
 import { SocialLinkProps } from "@/app/dashboard/socials/types/types";
 import { Button } from "@/components/ui/button";
+import { Globe } from "lucide-react";
 import Link from "next/link";
 
 type Props = {
@@ -24,8 +25,6 @@ function mapSocialsToLinks(
 }
 
 export default function UsernamePage({ user }: Props) {
-  console.log(user);
-
   const socialLinks = mapSocialsToLinks(user.socials);
   const cards = mapLinksToCards(socialLinks);
 
@@ -42,8 +41,8 @@ export default function UsernamePage({ user }: Props) {
 
   const displayName = user.name || user.username;
   return (
-    <main className="min-h-screen flex flex-col items-center px-4 py-10">
-      <section className="max-w-xl w-full flex flex-col items-center text-center gap-2 mb-2">
+    <main className="min-h-screen flex flex-col items-center mt-6 md:mt-10">
+      <section className="max-w-xl w-full flex flex-col items-center text-center gap-2 mb-4">
         <div className="h-40 w-40 rounded-full overflow-hidden border bg-muted flex items-center justify-center">
           {user.image ? (
             <img
@@ -60,7 +59,9 @@ export default function UsernamePage({ user }: Props) {
 
         <div className="flex items-center gap-2">
           <h1 className="text-2xl font-semibold">{displayName}</h1>
-          <img src={"/checkmark.svg"} className="w-4 md:w-5 h-4 md:h-5" />
+          {user.planStatus === "PREMIUM" && (
+            <img src={"/checkmark.svg"} className="w-4 md:w-5 h-4 md:h-5" />
+          )}
         </div>
 
         {user.bio && (
@@ -70,45 +71,32 @@ export default function UsernamePage({ user }: Props) {
         )}
       </section>
 
-      <section className="max-w-xl w-full flex flex-col gap-4">
+      <section className="max-w-xl w-full flex flex-col gap-2">
         {cards && cards.length !== 0 && (
-          <ul className="flex flex-col gap-3">
+          <div className="flex gap-2 items-center justify-center">
             {cards.map((card) => (
-              <li key={card.id}>
+              <div key={card.id}>
                 <a
                   href={card.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between px-4 py-3 rounded-xl border bg-muted/30 hover:bg-muted transition"
+                  className="flex items-center justify-between rounded-xl bg-muted/30 hover:bg-muted transition overflow-hidden p-1 border hover:scale-105"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="h-8 w-8 rounded-full flex items-center justify-center overflow-hidden bg-background">
-                      {card.icon === "globe" ? (
-                        <span className="text-lg">🌐</span>
-                      ) : (
-                        <img
-                          src={card.icon}
-                          alt={card.platformName}
-                          className="h-full w-full object-contain"
-                        />
-                      )}
-                    </div>
-
-                    <div className="flex flex-col items-start">
-                      <span className="text-sm font-medium">
-                        {card.platformName}
-                      </span>
-                      <span className="text-xs text-muted-foreground truncate max-w-[220px]">
-                        {card.displayUrl}
-                      </span>
-                    </div>
-                  </div>
-
-                  <span className="text-xs text-muted-foreground">View</span>
+                  {card.icon === "globe" ? (
+                    <span className="text-2xl flex items-center justify-center h-5 md:w-7 w-5 md:h-7">
+                      <Globe />
+                    </span>
+                  ) : (
+                    <img
+                      src={card.icon}
+                      alt={card.platformName}
+                      className="h-5 md:h-7 w-5 md:w-7"
+                    />
+                  )}
                 </a>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </section>
     </main>
