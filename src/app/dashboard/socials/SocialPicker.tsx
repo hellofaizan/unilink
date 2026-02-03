@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { SOCIAL_PLATFORMS } from "./social-data";
-import { SocialIcon } from "./SocialIcon";
-import { AddSocialModal } from "./addSocialModel";
 import { Globe } from "lucide-react";
+import { SOCIAL_PLATFORMS } from "./components/social-data";
+import { AddSocialModal } from "./components/addSocialModel";
+import { SocialIcon } from "./components/SocialIcon";
 
 export function SocialPicker() {
   return (

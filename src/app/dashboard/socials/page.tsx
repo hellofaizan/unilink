@@ -1,14 +1,24 @@
 import React from "react";
-import { SocialPicker } from "./components/SocialPicker";
 import { currentUser } from "@/server/user";
-import { db } from "@/lib/db";
-import { GetSocials } from "@/action/add-social";
+import { DeleteSocial, GetSocials } from "@/action/add-social";
+import { SocialList } from "./SocialsList";
+import { SocialPicker } from "./SocialPicker";
 
 export default async function page() {
   const user = await currentUser();
   const socials = await GetSocials();
 
-  console.log(socials);
+  async function handleDelete(id: string) {
+    "use server";
+    await DeleteSocial(id);
+  }
+
+  async function handleEdit(id: string) {
+    "use server";
+    // no-op for now, edit is handled via the add/edit modal
+    console.log("Edit social with id:", id);
+  }
+
   return (
     <div className="md:p-8 max-w-300 mx-auto">
       <div className="flex flex-col gap-1.5 mb-5">
@@ -18,8 +28,13 @@ export default async function page() {
         </p>
       </div>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-8">
         <SocialPicker />
+        <SocialList
+          socials={socials.data || []}
+          onDeleteSocial={handleDelete}
+          onEditSocial={handleEdit}
+        />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { SocialPlatform } from "./social-data";
 import { Loader, X } from "lucide-react";
@@ -18,19 +18,40 @@ import {
 import { Input } from "@/components/ui/input";
 import { AddSocial } from "@/action/add-social";
 
+type Mode = "create" | "edit";
+
 interface Props {
   social: SocialPlatform;
   children: React.ReactNode;
+
+  mode?: Mode;
+  initialHandle?: string;
+  initialUrl?: string;
+  socialId?: string;
 }
 
-export function AddSocialModal({ social, children }: Props) {
-  const [username, setUsername] = useState<string | "">("");
-  const [customUrl, setCustomUrl] = useState<string>("");
+export function AddSocialModal({
+  social,
+  children,
+  mode = "create",
+  initialHandle,
+  initialUrl,
+  socialId,
+}: Props) {
+  const [username, setUsername] = useState<string | "">(initialHandle ?? "");
+  const [customUrl, setCustomUrl] = useState<string>(initialUrl ?? "");
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [error, setError] = useState<string | "">("");
 
   const isCustom = social.isCustom;
+
+  useEffect(() => {
+    if (open && mode === "edit") {
+      setUsername(initialHandle ?? "");
+      setCustomUrl(initialUrl ?? "");
+    }
+  }, [open, mode, initialHandle, initialUrl]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,14 +79,12 @@ export function AddSocialModal({ social, children }: Props) {
         url: isCustom ? urlToSave : "",
       });
 
-      console.log(result);
-
       if (result.success) {
         setOpen(false);
         setUsername("");
         setCustomUrl("");
       } else {
-        setError(result.error || "Failed to add social");
+        setError(result.error || "Failed to save social");
       }
     } catch (error) {
       setError("Something went wrong");
@@ -80,7 +99,7 @@ export function AddSocialModal({ social, children }: Props) {
       <DialogContent className="sm:max-w-110">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            Add {social.name} Social
+            {mode === "edit" ? "Edit" : "Add"} {social.name} Social
           </DialogTitle>
           <div className="space-y-4 pt-2">
             {isCustom ? (
@@ -158,12 +177,12 @@ export function AddSocialModal({ social, children }: Props) {
               (isCustom ? !customUrl.trim() : !username.trim()) || loading
             }
             onClick={handleSubmit}
+            autoFocus={mode === "edit"}
           >
             {loading ? (
-              <>
-                <Loader className="h-4 w-4 animate-spin" />
-                Adding...
-              </>
+              <>Saving...</>
+            ) : mode === "edit" ? (
+              "Save Changes"
             ) : (
               "Add Social"
             )}

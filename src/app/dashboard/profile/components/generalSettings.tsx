@@ -143,7 +143,7 @@ export default function GeneralSettings({ user }: GeneralSettingsProps) {
     <div className="border rounded-lg p-6 flex flex-col gap-1">
       <p className="text-2xl font-semibold">General Settings</p>
       <span className="text-sm text-muted-foreground">
-        This is how visiotrs will see your presence online.
+        This is how visitors will see your presence online.
       </span>
 
       <ImageUploadComponent user={user} />
@@ -229,7 +229,7 @@ export default function GeneralSettings({ user }: GeneralSettingsProps) {
               {...register("bio")}
               rows={4}
             />
-            {errors.name && (
+            {errors.bio && (
               <p className="text-sm text-destructive mt-1.5">
                 {errors.bio?.message}
               </p>

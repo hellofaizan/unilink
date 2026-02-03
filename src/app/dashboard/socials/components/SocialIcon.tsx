@@ -25,7 +25,7 @@ export function SocialIcon({
       {social.isCustom ? (
         <Globe className="h-8 w-8 text-foreground" />
       ) : (
-        <Image src={social.icon} alt={social.name} width={30} height={30} className="w-9 h-9" />
+        <img src={social.icon} alt={social.name} width={30} height={30} className="w-9 h-9" />
       )}
     </div>
   );
