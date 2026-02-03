@@ -16,6 +16,8 @@ type SocialCardProps = SocialCardViewModel & {
   onDelete?: (id: string) => void;
   dragHandleProps?: React.HTMLAttributes<HTMLButtonElement>;
   className?: string;
+
+  onSaved?: (payload: { type: string; handle?: string; url?: string }) => void;
 };
 
 export function SocialCard({
@@ -31,6 +33,7 @@ export function SocialCard({
   onDelete,
   dragHandleProps,
   className,
+  onSaved,
 }: SocialCardProps) {
   const handleDelete = () => onDelete?.(id);
 
@@ -45,7 +48,7 @@ export function SocialCard({
       id: "custom",
       name: "Custom URL",
       icon: "globe",
-      baseUrl: "https://",
+      baseUrl: "",
       isCustom: true,
     };
   }
@@ -81,6 +84,7 @@ export function SocialCard({
                 initialHandle={originalHandle}
                 initialUrl={originalUrl}
                 socialId={id}
+                onSaved={onSaved}
               >
                 <Button
                   variant={"ghost"}

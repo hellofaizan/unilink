@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { AddSocial } from "@/action/add-social";
+import { toast } from "sonner";
 
 type Mode = "create" | "edit";
 
@@ -28,6 +29,8 @@ interface Props {
   initialHandle?: string;
   initialUrl?: string;
   socialId?: string;
+
+  onSaved?: (payload: { type: string; handle?: string; url?: string }) => void;
 }
 
 export function AddSocialModal({
@@ -37,6 +40,7 @@ export function AddSocialModal({
   initialHandle,
   initialUrl,
   socialId,
+  onSaved,
 }: Props) {
   const [username, setUsername] = useState<string | "">(initialHandle ?? "");
   const [customUrl, setCustomUrl] = useState<string>(initialUrl ?? "");
@@ -64,7 +68,7 @@ export function AddSocialModal({
       if (isCustom) {
         urlToSave = customUrl.trim();
         if (
-          urlToSave.startsWith("https://") &&
+          urlToSave.startsWith("http://") ||
           urlToSave.startsWith("https://")
         ) {
           setError("URL must not start with http:// or https://");
@@ -73,21 +77,38 @@ export function AddSocialModal({
         }
       }
 
+      const handleToSave = !isCustom ? username.trim() : "";
+
       const result = await AddSocial({
         type: social.id,
-        handle: !isCustom ? username.trim() : "",
+        handle: !isCustom ? handleToSave : "",
         url: isCustom ? urlToSave : "",
       });
 
       if (result.success) {
+        onSaved?.({
+          type: social.id,
+          handle: !isCustom ? handleToSave : undefined,
+          url: isCustom ? urlToSave : undefined,
+        });
+
         setOpen(false);
         setUsername("");
         setCustomUrl("");
+        toast.success(`${social.name} link ${mode === "edit" ? "edited" : "added"} successfully!`, {
+          position: "top-center",
+        });
       } else {
         setError(result.error || "Failed to save social");
+        toast.error(`Failed to add ${social.name} link`, {
+          position: "top-center",
+        });
       }
     } catch (error) {
       setError("Something went wrong");
+      toast.error(`Failed to add ${social.name} link`, {
+        position: "top-center",
+      });
     } finally {
       setLoading(false);
     }
