@@ -130,7 +130,7 @@ export function AddSocialModal({
                 </p>
                 <form onSubmit={handleSubmit} className="flex flex-col gap-2">
                   <Input
-                    type="text"
+                    type="url"
                     placeholder="example.com"
                     className="peer h-10 bg-none text-foreground"
                     value={customUrl}
