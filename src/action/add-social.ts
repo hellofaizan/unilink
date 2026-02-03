@@ -49,11 +49,16 @@ export async function AddSocial(data: {
         });
       }
     } else {
+      const count = await db.socials.count({
+        where: { userId },
+      });
+
       if (data.type == "custom") {
         await db.socials.create({
           data: {
             type: data.type,
             url: data.url,
+            position: count,
             userId: userId,
           },
         });
@@ -62,6 +67,7 @@ export async function AddSocial(data: {
           data: {
             type: data.type,
             handle: data.handle,
+            position: count,
             userId: userId,
           },
         });
@@ -98,6 +104,34 @@ export async function DeleteSocial(socialId: string) {
   }
 }
 
+export async function ReorderSocials(order: string[]) {
+  const user = await currentUser();
+  if (!user?.id) {
+    return { success: false, error: "UNAUTHORIZED" };
+  }
+
+  try {
+    await db.$transaction(
+      order.map((id, index) =>
+        db.socials.updateMany({
+          where: {
+            id,
+            userId: user.id,
+          },
+          data: {
+            position: index,
+          },
+        }),
+      ),
+    );
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error reordering socials: ", error);
+    return { success: false, error: "Failed to reorder socials" };
+  }
+}
+
 export async function GetSocials() {
   const user = await currentUser();
   if (!user?.id) {
@@ -108,6 +142,9 @@ export async function GetSocials() {
     const data = await db.socials.findMany({
       where: {
         userId: user?.id,
+      },
+      orderBy: {
+        position: "asc",
       },
     });
 

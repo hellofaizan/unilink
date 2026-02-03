@@ -72,6 +72,7 @@ model Socials {
   type     String
   handle   String?
   url      String?
+  position Int      @default(0)
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String

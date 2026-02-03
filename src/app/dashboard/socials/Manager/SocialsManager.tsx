@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { DeleteSocial } from "@/action/add-social";
+import { DeleteSocial, ReorderSocials } from "@/action/add-social";
 import { SocialPicker } from "../SocialPicker";
 import { SocialList } from "../SocialsList";
 import type { SocialLinkProps } from "../types/types";
@@ -71,6 +71,36 @@ export function SocialsManager({ initialSocials }: Props) {
     });
   };
 
+  const handleReorderSocials = (orderedIds: string[]) => {
+    setSocials((prev) => {
+      const byId = new Map(prev.map((s) => [s.id, s]));
+      const reordered: SocialLinkProps[] = [];
+
+      orderedIds.forEach((id) => {
+        const item = byId.get(id);
+        if (item) reordered.push(item);
+      });
+
+      prev.forEach((item) => {
+        if (!orderedIds.includes(item.id)) {
+          reordered.push(item);
+        }
+      });
+
+      return reordered;
+    });
+
+    startTransition(async () => {
+      const result = await ReorderSocials(orderedIds);
+
+      if (!result.success) {
+        toast.error("Failed to save order of socials", {
+          position: "top-center",
+        });
+      }
+    });
+  };
+
   const existingTypes = socials.map((s) => s.type);
 
   return (
@@ -83,6 +113,7 @@ export function SocialsManager({ initialSocials }: Props) {
       <SocialList
         socials={socials}
         onDeleteSocial={handleDeleteSocial}
+        onReorder={handleReorderSocials}
         onUpsertSocial={handleUpsertSocial}
       />
     </div>

@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { SocialPlatform } from "./social-data";
 import { getPlatformMeta } from "../types/mapper";
 import { AddSocialModal } from "./addSocialModel";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 type SocialCardProps = SocialCardViewModel & {
   originalType?: string;
@@ -35,6 +37,14 @@ export function SocialCard({
   className,
   onSaved,
 }: SocialCardProps) {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   const handleDelete = () => onDelete?.(id);
 
   const showGlobeIcon = isCustom || icon === "globe";
@@ -55,21 +65,22 @@ export function SocialCard({
 
   return (
     <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
       className={cn(
-        "rounded-2xl flex flex-row gap-1 pl-1 border items-center bg-muted/20",
+        "rounded-2xl flex flex-row border items-center bg-muted/20 overflow-hidden",
         className,
       )}
     >
-      <Button
+      <button
         type="button"
-        variant={"ghost"}
-        size={"icon-xs"}
-        className="cursor-grab"
+        className="cursor-grab h-full w-6 flex items-center justify-between"
         aria-label="Reorder"
-        {...dragHandleProps}
+        {...listeners}
       >
         <GripVertical />
-      </Button>
+      </button>
       <div className="flex flex-col w-full gap-2 border-l rounded-2xl px-4 py-2.5 bg-muted/50">
         <div className="flex items-center justify-between text-xs text-muted-foreground">
           <span className="text-sm text-foreground font-medium">
