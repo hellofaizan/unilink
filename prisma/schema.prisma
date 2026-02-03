@@ -64,13 +64,14 @@ model User {
   planStatus       STATUS    @default(FREE_PLAN)
   accounts         Account[]
 
-  Socials Socials[]
+  socials Socials[]
 }
 
 model Socials {
-  id     String @id @default(cuid())
-  type   String
-  handle String
+  id       String   @id @default(cuid())
+  type     String
+  handle   String?
+  url      String?
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String

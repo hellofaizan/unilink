@@ -22,10 +22,10 @@ export function SocialIcon({
       title={social.name}
       {...props}
     >
-      {social.icon === "globe" ? (
+      {social.isCustom ? (
         <Globe className="h-8 w-8 text-foreground" />
       ) : (
-        <Image src={social.icon} alt={social.name} width={30} height={30} />
+        <Image src={social.icon} alt={social.name} width={30} height={30} className="w-9 h-9" />
       )}
     </div>
   );

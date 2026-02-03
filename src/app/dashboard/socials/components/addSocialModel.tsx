@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { SocialPlatform } from "./social-data";
-import { AlertTriangle, Loader, X } from "lucide-react";
+import { Loader, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,7 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { AddSocial } from "@/action/add-social";
 
 interface Props {
   social: SocialPlatform;
@@ -31,6 +31,49 @@ export function AddSocialModal({ social, children }: Props) {
   const [error, setError] = useState<string | "">("");
 
   const isCustom = social.isCustom;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      let urlToSave = "";
+
+      if (isCustom) {
+        urlToSave = customUrl.trim();
+        if (
+          urlToSave.startsWith("https://") &&
+          urlToSave.startsWith("https://")
+        ) {
+          setError("URL must not start with http:// or https://");
+          setLoading(false);
+          return;
+        }
+      }
+
+      const result = await AddSocial({
+        type: social.id,
+        handle: !isCustom ? username.trim() : "",
+        url: isCustom ? urlToSave : "",
+      });
+
+      console.log(result);
+
+      if (result.success) {
+        setOpen(false);
+        setUsername("");
+        setCustomUrl("");
+      } else {
+        setError(result.error || "Failed to add social");
+      }
+    } catch (error) {
+      setError("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -45,57 +88,59 @@ export function AddSocialModal({ social, children }: Props) {
                 <p className="text-sm text-muted-foreground">
                   Save a custom Url.
                 </p>
-                <form /*onSubmit={handleSubmit}*/ className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="custom-url">URL</Label>
-                    <Input
-                      id="custom-url"
-                      className="h-10"
-                      placeholder="https://example.com"
-                      value={customUrl}
-                      onChange={(e) => {
-                        setCustomUrl(e.target.value);
-                        setError("");
-                      }}
-                      disabled={loading}
-                      type="url"
-                    />
-                    {error && (
-                      <p className="text-xs text-destructive mt-2">{error}</p>
-                    )}
+                    <div className="flex border rounded-lg bg-input">
+                      <Input
+                        type="url"
+                        placeholder="example.com"
+                        className="peer h-10 bg-none text-foreground flex-1"
+                        value={customUrl}
+                        onChange={(e) => {
+                          setCustomUrl(e.target.value);
+                          setError("");
+                        }}
+                        disabled={loading}
+                      />
+                    </div>
                   </div>
                 </form>
               </>
             ) : (
-              <>
-                <p className="text-sm text-muted-foreground">
-                  Enter your {social.name} username or handle to link your
-                  profile.
-                </p>
-                <form /*onSubmit={handleSubmit}*/ className="space-y-4">
-                  <div>
-                    <Input
-                      className="h-10"
-                      placeholder={`Enter your ${social.name} username`}
-                      value={username}
-                      onChange={(e) => {
-                        setUsername(e.target.value);
-                        setError("");
-                      }}
-                      disabled={loading}
-                    />
+              <div className="space-y-4 pt-2 text-sm text-muted-foreground">
+                <p>Enter your {social.name} username to link your profile.</p>
+
+                <form className="space-y-4" onSubmit={handleSubmit}>
+                  <div className="flex flex-col">
+                    <div className="flex border rounded-lg bg-input px-2">
+                      <Image
+                        src={social.icon}
+                        alt={social.name}
+                        width={28}
+                        height={28}
+                      />
+                      <span className="flex flex-none items-center justify-center pl-2 text-sm w-max">
+                        {social.baseUrl}
+                      </span>
+                      <Input
+                        type="text"
+                        placeholder="...."
+                        className="peer h-10 border-0 bg-none px-0 text-foreground flex-1"
+                        value={username}
+                        onChange={(e) => {
+                          setUsername(e.target.value);
+                          setError("");
+                        }}
+                        disabled={loading}
+                      />
+                    </div>
+
                     {error && (
                       <p className="text-xs text-destructive mt-2">{error}</p>
                     )}
-                    {username && (
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Preview: https://{social.baseUrl}
-                        {username}
-                      </p>
-                    )}
                   </div>
                 </form>
-              </>
+              </div>
             )}
           </div>
         </DialogHeader>
@@ -109,8 +154,10 @@ export function AddSocialModal({ social, children }: Props) {
           <Button
             variant={"default"}
             type="submit"
-            disabled={!username.trim() || loading}
-            onClick={() => setLoading(true)}
+            disabled={
+              (isCustom ? !customUrl.trim() : !username.trim()) || loading
+            }
+            onClick={handleSubmit}
           >
             {loading ? (
               <>
