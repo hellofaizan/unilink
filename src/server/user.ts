@@ -1,11 +1,27 @@
 import { db } from "@/lib/db";
 import { auth } from "./auth";
+import { includes } from "zod";
 
 export const getUserById = async (id: string) => {
   try {
     const user = await db.user.findUnique({
       where: {
         id,
+      },
+    });
+    return user;
+  } catch (error) {
+    return null;
+  }
+};
+
+export const getUserByUsername = async (username: string) => {
+  try {
+    const uname = username.toLowerCase();
+    const user = await db.user.findUnique({
+      where: { username: uname },
+      include: {
+        socials: true,
       },
     });
     return user;
@@ -55,26 +71,26 @@ export const linkedAccounts = async (id: string) => {
 };
 
 export const currentUser = async () => {
-    const session = await auth();
-  
-    return session?.user;
-  };
-  
-  export const currentRole = async () => {
-    const session = await auth();
-  
-    return session?.user?.role;
-  };
-  
-  export const onWaitlist = async (email: string) => {
-    try {
-      const user = await db.waitlist.findUnique({
-        where: {
-          email,
-        },
-      });
-      return user;
-    } catch (error) {
-      return null;
-    }
-  };
+  const session = await auth();
+
+  return session?.user;
+};
+
+export const currentRole = async () => {
+  const session = await auth();
+
+  return session?.user?.role;
+};
+
+export const onWaitlist = async (email: string) => {
+  try {
+    const user = await db.waitlist.findUnique({
+      where: {
+        email,
+      },
+    });
+    return user;
+  } catch (error) {
+    return null;
+  }
+};
