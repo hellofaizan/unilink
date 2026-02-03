@@ -14,7 +14,6 @@ export default async function page() {
         </p>
       </div>
 
-      {/* Client manager handles instant UI updates for add/edit/delete */}
       <SocialsManager initialSocials={socials.data || []} />
     </div>
   );

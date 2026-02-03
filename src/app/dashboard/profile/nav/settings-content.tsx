@@ -6,11 +6,13 @@ import SecurityDetails from "../components/SecurityDetails";
 interface SettingsContentProps {
   user: User | null;
   activeTab?: string;
+  onUserChange?: (user: User | null) => void;
 }
 
 export default function SettingsContent({
   user,
   activeTab = "profile",
+  onUserChange,
 }: SettingsContentProps) {
   return (
     <div className="w-full max-w-2xl">
@@ -22,7 +24,7 @@ export default function SettingsContent({
         }`}
       >
         {user?.planStatus === "FREE_PLAN" && <GetVerifiedBanner user={user} />}
-        <PersonalDetails user={user} />
+        <PersonalDetails user={user} onUserChange={onUserChange} />
       </div>
 
       <div

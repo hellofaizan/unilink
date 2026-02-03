@@ -1,11 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
+import type { User } from "@prisma/client";
 import SettingsNav from "./nav/settings-nav";
 import SettingsContent from "./nav/settings-content";
 
-export default function SettingsPageClient({ user }: any) {
+interface SettingsPageClientProps {
+  user: User | null;
+}
+
+export default function SettingsPageClient({ user }: SettingsPageClientProps) {
   const [activeTab, setActiveTab] = useState("profile");
+  const [currentUser, setCurrentUser] = useState<User | null>(user);
 
   const handleTabChange = (tab: string | ((prevState: string) => string)) => {
     const newTab = typeof tab === "function" ? tab(activeTab) : tab;
@@ -23,7 +29,11 @@ export default function SettingsPageClient({ user }: any) {
 
       <div className="flex flex-col gap-2">
         <SettingsNav activeTab={activeTab} onTabChange={handleTabChange} />
-        <SettingsContent user={user} activeTab={activeTab} />
+        <SettingsContent
+          user={currentUser}
+          activeTab={activeTab}
+          onUserChange={setCurrentUser}
+        />
       </div>
     </div>
   );

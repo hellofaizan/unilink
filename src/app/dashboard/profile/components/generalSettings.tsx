@@ -27,9 +27,13 @@ type formValues = z.infer<typeof UpdateProfileSchema>;
 
 interface GeneralSettingsProps {
   user: User | null;
+  onUserChange?: (user: User | null) => void;
 }
 
-export default function GeneralSettings({ user }: GeneralSettingsProps) {
+export default function GeneralSettings({
+  user,
+  onUserChange,
+}: GeneralSettingsProps) {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -131,6 +135,19 @@ export default function GeneralSettings({ user }: GeneralSettingsProps) {
         return;
       }
 
+      if (user && onUserChange) {
+        const normalizedUsername: string | null = data.username
+          ? data.username.toLowerCase()
+          : user.username ?? null;
+
+        onUserChange({
+          ...user,
+          name: data.name ?? user.name,
+          bio: data.bio ?? user.bio,
+          username: normalizedUsername,
+        });
+      }
+
       setSuccess("✅ Profile updated successfully!");
       setDisabled(true);
     } catch {
@@ -146,7 +163,17 @@ export default function GeneralSettings({ user }: GeneralSettingsProps) {
         This is how visitors will see your presence online.
       </span>
 
-      <ImageUploadComponent user={user} />
+      <ImageUploadComponent
+        user={user}
+        onAvatarUpdated={(imageUrl) => {
+          if (user && onUserChange) {
+            onUserChange({
+              ...user,
+              image: imageUrl,
+            });
+          }
+        }}
+      />
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
         <div className="space-y-4">

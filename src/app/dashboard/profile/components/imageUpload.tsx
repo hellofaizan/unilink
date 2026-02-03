@@ -7,14 +7,18 @@ import Image from "next/image";
 import { Suspense, useRef, useState } from "react";
 import Resizer from "react-image-file-resizer";
 import { UploadAvatar } from "@/action/upload-avatar";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "sonner";
 
-interface GeneralSettingsProps {
+interface ImageUploadProps {
   user: User | null;
+  onAvatarUpdated?: (imageUrl: string) => void;
 }
 
-export default function ImageUploadComponent({ user }: GeneralSettingsProps) {
+export default function ImageUploadComponent({
+  user,
+  onAvatarUpdated,
+}: ImageUploadProps) {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(
     user?.image || null,
   );
@@ -64,6 +68,8 @@ export default function ImageUploadComponent({ user }: GeneralSettingsProps) {
       if (!res.success) {
         throw new Error("DB_UPDATE_FAILED");
       }
+
+      onAvatarUpdated?.(imageUrl);
 
       toast.success("Image uploaded successfully!", { position: "top-center" });
     } catch {
