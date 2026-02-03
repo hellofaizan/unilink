@@ -64,7 +64,7 @@ export function SocialsManager({ initialSocials }: Props) {
           position: "top-center",
         });
       } else {
-        toast.error(`Failed to social link`, {
+        toast.error(`Failed to delete the social link`, {
           position: "top-center",
         });
       }
@@ -104,7 +104,7 @@ export function SocialsManager({ initialSocials }: Props) {
   const existingTypes = socials.map((s) => s.type);
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 ">
       <SocialPicker
         existingSocialTypes={existingTypes}
         onSocialSaved={handleUpsertSocial}

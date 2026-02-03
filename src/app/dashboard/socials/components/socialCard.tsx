@@ -120,8 +120,8 @@ export function SocialCard({
           </div>
         </div>
 
-        <div className="rounded-lg px-2 py-1 flex items-center gap-2 border bg-muted">
-          <div className="h-7 w-7 rounded-full flex items-center justify-center overflow-hidden">
+        <div className="rounded-lg px-2 py-1 flex items-center gap-2 border bg-muted overflow-hidden w-full truncate">
+          <div className="h-7 w-7 rounded-full flex items-center justify-center overflow-hidden truncate">
             {showGlobeIcon ? (
               <Globe className="h-5 w-5" />
             ) : (

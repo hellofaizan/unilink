@@ -64,18 +64,59 @@ model User {
   planStatus       STATUS    @default(FREE_PLAN)
   accounts         Account[]
 
-  socials Socials[]
+  socials    Socials[]
+  collection Collection[]
+  links      Link[]
 }
 
 model Socials {
-  id       String   @id @default(cuid())
+  id       String  @id @default(cuid())
   type     String
   handle   String?
   url      String?
-  position Int      @default(0)
+  position Int     @default(0)
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
+}
+
+model Collection {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  position  Int      @default(0)
+  type      String   @default("collection")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  links Link[]
+
+  @@index([userId, position])
+}
+
+model Link {
+  id           String  @id @default(cuid())
+  userId       String
+  collectionId String?
+  title        String
+  url          String?
+  isActive     Boolean @default(true)
+
+  position           Int?
+  collectionPosition Int?
+
+  thumbnail String?
+  icon      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  collection Collection? @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+
+  @@index([userId, position])
+  @@index([collectionId, collectionPosition])
 }
 
 model Waitlist {

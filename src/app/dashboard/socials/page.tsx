@@ -10,7 +10,7 @@ export default async function page() {
       <div className="flex flex-col gap-1.5 mb-5">
         <p className="text-2xl font-medium">Link your social media profiles.</p>
         <p className="text-muted-foreground">
-          Display all your social links on your unilink profile.
+          Display all your social links on your unilink profile where people can find you online.
         </p>
       </div>
 

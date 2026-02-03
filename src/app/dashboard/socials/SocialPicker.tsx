@@ -37,26 +37,26 @@ export function SocialPicker({
 
         {/* Hide the custom URL icon once a "custom" social already exists */}
         {!usedTypes.has("custom") && (
-          <AddSocialModal
-            social={{
-              id: "custom",
-              name: "Custom URL",
-              icon: "globe",
-              baseUrl: "https://",
-              isCustom: true,
-            }}
+        <AddSocialModal
+          social={{
+            id: "custom",
+            name: "Custom URL",
+            icon: "globe",
+            baseUrl: "https://",
+            isCustom: true,
+          }}
             onSaved={onSocialSaved}
-          >
-            <div className="w-full md:w-auto px-4 py-3 rounded-2xl bg-muted/30 hover:bg-muted/70 border flex items-center gap-3 transition cursor-pointer">
-              <Globe className="h-8 w-8 text-foreground shrink-0" />
-              <div className="flex flex-col items-start">
-                <span className="text-sm font-medium">Add Custom URL</span>
-                <span className="text-xs text-muted-foreground">
-                  Use your own URL.
-                </span>
-              </div>
+        >
+          <div className="w-full md:w-auto px-4 py-3 rounded-2xl bg-muted/30 hover:bg-muted/70 border flex items-center gap-3 transition cursor-pointer">
+            <Globe className="h-8 w-8 text-foreground shrink-0" />
+            <div className="flex flex-col items-start">
+              <span className="text-sm font-medium">Add Custom URL</span>
+              <span className="text-xs text-muted-foreground">
+                Use your own URL.
+              </span>
             </div>
-          </AddSocialModal>
+          </div>
+        </AddSocialModal>
         )}
       </div>
     </div>
