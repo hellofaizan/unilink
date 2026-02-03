@@ -107,22 +107,21 @@ export function AddSocialModal({
                 <p className="text-sm text-muted-foreground">
                   Save a custom Url.
                 </p>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex border rounded-lg bg-input">
-                      <Input
-                        type="url"
-                        placeholder="example.com"
-                        className="peer h-10 bg-none text-foreground flex-1"
-                        value={customUrl}
-                        onChange={(e) => {
-                          setCustomUrl(e.target.value);
-                          setError("");
-                        }}
-                        disabled={loading}
-                      />
-                    </div>
-                  </div>
+                <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+                  <Input
+                    type="url"
+                    placeholder="example.com"
+                    className="peer h-10 bg-none text-foreground"
+                    value={customUrl}
+                    onChange={(e) => {
+                      setCustomUrl(e.target.value);
+                      setError("");
+                    }}
+                    disabled={loading}
+                  />
+                  {error && (
+                    <p className="text-sm text-destructive mt-1">{error}</p>
+                  )}
                 </form>
               </>
             ) : (
@@ -155,7 +154,7 @@ export function AddSocialModal({
                     </div>
 
                     {error && (
-                      <p className="text-xs text-destructive mt-2">{error}</p>
+                      <p className="text-xs text-destructive mt-1">{error}</p>
                     )}
                   </div>
                 </form>

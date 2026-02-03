@@ -4,12 +4,21 @@ import { Globe } from "lucide-react";
 import { SOCIAL_PLATFORMS } from "./components/social-data";
 import { AddSocialModal } from "./components/addSocialModel";
 import { SocialIcon } from "./components/SocialIcon";
+import { platform } from "os";
 
-export function SocialPicker() {
+type SocialPickerProps = {
+  existingSocialTypes?: string[];
+};
+
+export function SocialPicker({ existingSocialTypes = [] }: SocialPickerProps) {
+  const usedTypes = new Set(existingSocialTypes);
+  const availablePlatforms = SOCIAL_PLATFORMS.filter(
+    (platform) => !usedTypes.has(platform.id),
+  );
   return (
     <div>
       <div className="flex flex-wrap gap-3">
-        {SOCIAL_PLATFORMS.map((social, index) => (
+        {availablePlatforms.map((social, index) => (
           <div key={index}>
             <AddSocialModal social={social}>
               <SocialIcon social={social} />

@@ -29,7 +29,9 @@ export default async function page() {
       </div>
 
       <div className="flex flex-col gap-8">
-        <SocialPicker />
+        <SocialPicker
+          existingSocialTypes={socials.data?.map((s) => s.type) || []}
+        />
         <SocialList
           socials={socials.data || []}
           onDeleteSocial={handleDelete}
