@@ -7,9 +7,8 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      <Navbar />
+    <div className="flex justify-center w-full">
       {children}
-    </>
+    </div>
   );
 }

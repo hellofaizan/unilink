@@ -16,13 +16,13 @@ export default function CTAButton() {
     >
       {session && session.data !== null ? (
         <Link href={"/dashboard"}>
-          <Button size={"lg"} variant={"gradient"}>
+          <Button size={"lg"} variant={"gradient"} className="rounded-xl">
             DASHBOARD
           </Button>
         </Link>
       ) : (
         <Link href={"/register"}>
-          <Button size={"lg"} variant={"gradient"}>
+          <Button size={"lg"} variant={"gradient"} className="rounded-xl">
             GET STARTED
           </Button>
         </Link>

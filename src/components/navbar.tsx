@@ -19,47 +19,43 @@ const gugi = Gugi({
 export default function Navbar() {
   const { theme } = useTheme();
   return (
-    <div className="fixed w-full flex items-center justify-between p-3 md:p-6">
+    <div className="w-full fixed flex items-center max-w-6xl justify-between py-4 md:p-6">
       <div className="flex items-center gap-1">
         <Image
-          src={
-            theme === "light"
-              ? "/logos/logo_black.png"
-              : "/logos/logo_white.png"
-          }
+          src={"/logos/banner.svg"}
           alt="Unilink"
-          height={35}
-          width={35}
+          height={0}
+          width={160}
           priority
           unoptimized
         />
-        <p className={cn(`font-medium text-3xl`, gugi.className)}>UNILINK</p>
+        {/* <p className={cn(`font-bold text-3xl`, gugi.className)}>UNILINK</p> */}
       </div>
 
       <div className="flex items-center gap-4">
         <Link href={"/pricing"} className="hidden md:flex">
-          <p className="hidden md:flex cursor-pointer hover:underline hover:text-primary">
+          <p className="hidden text-lg md:flex cursor-pointer hover:underline hover:text-primary">
             pricing
           </p>
         </Link>
         <Link href={"/help"} target="_blank" className="hidden md:flex">
-          <p className="hidden md:flex items-center gap-0.5 cursor-pointer hover:underline hover:text-primary">
-            <LucideInfo size={14} />
+          <p className="hidden text-lg md:flex items-center gap-0.5 cursor-pointer hover:underline hover:text-primary">
+            {/* <LucideInfo size={14} /> */}
             help
           </p>
         </Link>
         <Link
           href={"https://dub.sh/unilinkdc"}
           target="_blank"
-          className="hidden md:flex"
+          className="hidden text-lg md:flex"
         >
           <p className="cursor-pointer hover:underline hover:text-primary">
             discord
           </p>
         </Link>
-        <div className="hidden md:flex">
+        {/* <div className="hidden md:flex">
           <ModeToggle />
-        </div>
+        </div> */}
 
         <CTAButton />
       </div>

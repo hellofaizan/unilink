@@ -8,9 +8,9 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      <Navbar />
-      <div className="min-h-screen flex items-center justify-center">
+    <div className="flex items-center flex-col">
+    <Navbar />
+      <div className="min-h-dvh flex items-center justify-center w-full">
         <div className="w-full px-4 sm:px-0">
           <div className="flex flex-col w-full max-w-100 mx-auto">
             {/* Logo Container */}
@@ -28,6 +28,6 @@ export default function AuthLayout({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

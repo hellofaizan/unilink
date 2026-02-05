@@ -73,7 +73,7 @@ export function AppSidebar({ ...props }) {
         <SidebarContent className="flex flex-col h-full border">
           <div className="border-b p-4 flex items-center justify-betwee h-28">
             <Link href="/dashboard">
-              <div className="flex items-cente">
+              <div className="flex items-center">
                 <Image
                   src={"/logos/banner.svg"}
                   alt="Unilink Logo"
