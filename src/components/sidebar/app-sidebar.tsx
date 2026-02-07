@@ -97,7 +97,7 @@ export function AppSidebar({ ...props }) {
           </div>
 
           <div className="flex-1 pl-3 py-4">
-            <nav className="space-y-1 5">
+            <nav className="space-y-1 5 transition-all">
               {role === "ADMIN" && (
                 <Link
                   href={"/dashboard/admin"}

@@ -75,7 +75,7 @@ export default function LandingPage() {
 
             <p className="mt-6 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">
               Build a beautiful, mobile-optimized link in bio page in minutes.
-              Your personal page to show everything you are and create.
+              Your personal page to show everything you are, create and sell in one place..
             </p>
 
             <div className="mt-8 flex flex-col md:items-center gap-4 sm:flex-row sm:items-center">

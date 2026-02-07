@@ -76,6 +76,10 @@ export default async function page({ params }: Props) {
   const { username } = await params;
   const user = await getUserByUsername(username);
 
+  if (!user) {
+    return <div>eebjhebjesb</div>;
+  }
+
   return (
     <Suspense
       fallback={
