@@ -3,6 +3,7 @@ import { SocialLinkProps } from "@/app/dashboard/socials/types/types";
 import { Button } from "@/components/ui/button";
 import { Globe } from "lucide-react";
 import Link from "next/link";
+import PublicLinks from "../components/links";
 
 type Props = {
   user: any;
@@ -98,6 +99,10 @@ export default function UsernamePage({ user }: Props) {
             ))}
           </div>
         )}
+      </section>
+
+      <section className="max-w-xl w-full flex flex-col gap-2">
+        <PublicLinks links={user.links} />
       </section>
     </main>
   );

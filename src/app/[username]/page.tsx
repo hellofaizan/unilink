@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import type { Metadata } from "next";
-import { getUserByUsername } from "@/server/user";
 import { Loader } from "lucide-react";
+import { getUserByUsername } from "@/server/user";
 import UsernamePage from "./main/UsernamePage";
 
 type Props = {
@@ -15,18 +15,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!user) {
     return {
       title:
-        "Unilink - A minimal and rick link in bio website | Claim this username",
+        "Unilink - A minimal and rich link in bio website | Claim this username",
       description: `The profile "${username}" does not exist on Unilink. Claim now`,
       applicationName: "Unilink",
       twitter: {
         creator: "@curiousfaizaan",
         card: "summary",
         title:
-          "Unilink - A minimal and rick link in bio website | Claim this username",
+          "Unilink - A minimal and rich link in bio website | Claim this username",
         description: `The profile "${username}" does not exist on Unilink. Claim now`,
       },
       openGraph: {
-        title: "Unilink - A minimal and rick link in bio F",
+        title: "Unilink - A minimal and rich link in bio",
         description: `The profile "${username}" does not exist on Unilink. Claim now`,
       },
     };
@@ -34,26 +34,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const displayName = user.name || user.username || username;
   const description =
-    user.bio + ` | ${displayName} on Unilink` ||
-    `View ${displayName}'s profile and social links on Unilink - A rick link in bio`;
-  const imageUrl = user.image as string;
+    user.bio && user.bio.length > 0
+      ? `${user.bio} | ${displayName} on Unilink`
+      : `View ${displayName}'s profile and links on Unilink - a rich link in bio.`;
+  const imageUrl = user.image || "/favicon.ico";
 
   return {
     title: `${displayName} on Unilink - Link in bio`,
     description,
     icons: [
       {
-        url: user?.image || "/favicon.ico",
+        url: imageUrl,
         sizes: "192x192",
         type: "image/png",
       },
       {
-        url: user?.image || "/favicon.ico",
+        url: imageUrl,
         sizes: "512x512",
         type: "image/png",
       },
       {
-        url: user?.image || "/favicon.ico",
+        url: imageUrl,
         sizes: "1024x1024",
         type: "image/png",
       },
@@ -72,12 +73,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function page({ params }: Props) {
+export default async function Page({ params }: Props) {
   const { username } = await params;
   const user = await getUserByUsername(username);
 
   if (!user) {
-    return <div>eebjhebjesb</div>;
+    return (
+      <div className="flex w-full min-h-dvh items-center justify-center md:min-h-screen">
+        <p className="text-sm text-muted-foreground">
+          This profile does not exist on Unilink.
+        </p>
+      </div>
+    );
   }
 
   return (

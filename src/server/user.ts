@@ -21,7 +21,20 @@ export const getUserByUsername = async (username: string) => {
     const user = await db.user.findUnique({
       where: { username: uname },
       include: {
-        socials: true,
+        socials: {
+          orderBy: {
+            position: "asc",
+          },
+        },
+        links: {
+          where: {
+            collectionId: null,
+            isActive: true,
+          },
+          orderBy: {
+            position: "asc",
+          },
+        },
       },
     });
     return user;
