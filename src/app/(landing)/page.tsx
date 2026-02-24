@@ -17,7 +17,6 @@ export default function LandingPage() {
   return (
     <main className="flex flex-col md:px-8 px-2 max-w-7xl w-full overflow-hidden">
       <div className="flex flex-col items-center md:h-screen w-full">
-
         <div className="flex items-center md:px-3 justify-between py-4 md:py-6 md:mt-4 w-full">
           <div className="w-15 h-15 flex items-center gap-1">
             <Image
@@ -75,7 +74,8 @@ export default function LandingPage() {
 
             <p className="mt-6 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">
               Build a beautiful, mobile-optimized link in bio page in minutes.
-              Your personal page to show everything you are, create and sell in one place..
+              Your personal page to show everything you are, create and sell in
+              one place..
             </p>
 
             <div className="mt-8 flex flex-col md:items-center gap-4 sm:flex-row sm:items-center">
@@ -106,23 +106,23 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="flex-1 flex w-full justify-center md:w-auto mt-8">
+          <div className="flex-1 flex w-full justify-center md:w-auto mt-8 transition-all">
             <img
               src={"/previewbanner.svg"}
-              className="w-60 md:w-86 md:absolute drop-shadow-xl hover:scale-105"
+              className="w-60 md:w-86 md:absolute drop-shadow-xl"
             />
             <img
               src={"/cards/bmac.png"}
-              className="w-30 bottom-20 hidden md:flex ml-50 absolute drop-shadow-xl -rotate-8 hover:scale-105"
+              className="w-30 bottom-20 hidden md:flex ml-50 absolute drop-shadow-xl -rotate-8"
             />
             <div className="md:flex relative w-full h-full hidden">
               <img
                 src={"/cards/twitter.png"}
-                className="w-30 left-0 md:absolute drop-shadow-xl -rotate-4 -ml-10 hover:scale-105"
+                className="w-30 left-0 md:absolute drop-shadow-xl -rotate-4 -ml-10"
               />
               <img
                 src={"/cards/youtube.png"}
-                className="w-30 left-0 absolute drop-shadow-xl mt-35 -ml-15 rotate-3 hover:scale-105"
+                className="w-30 left-0 absolute drop-shadow-xl mt-35 -ml-15 rotate-3"
               />
             </div>
           </div>
