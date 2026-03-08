@@ -40,16 +40,16 @@ const routes = [
     icon: Heart,
     href: "/dashboard/socials",
   },
-  {
-    label: "Emails",
-    icon: Mail,
-    href: "/dashboard/emails",
-  },
-  {
-    label: "Ananlytics",
-    icon: ChartColumn,
-    href: "/dashboard/analytics",
-  },
+  // {
+  //   label: "Emails",
+  //   icon: Mail,
+  //   href: "/dashboard/emails",
+  // },
+  // {
+  //   label: "Ananlytics",
+  //   icon: ChartColumn,
+  //   href: "/dashboard/analytics",
+  // },
   {
     label: "Profile",
     icon: UserPen,
@@ -166,7 +166,11 @@ export function AppSidebar({ ...props }) {
               <span className="font-medium">Log out</span>
             </button>
 
-            <div className="flex shrink-0 items-center space-x-3 p-2">
+            <Link
+              href={`/${user.username as string}`}
+              target="_blank"
+              className="flex shrink-0 items-center space-x-3 p-2 hover:bg-muted hover:text-muted-foreground transition-all"
+            >
               <Avatar className="h-auto w-auto">
                 <Suspense fallback={<AvatarFallback>UNI</AvatarFallback>}>
                   <Image
@@ -185,7 +189,7 @@ export function AppSidebar({ ...props }) {
                 <p className="text-xs text-muted-foregroun">{user.email}</p>
               </div>
               <ChevronRight className="h-4 w-4 text-muted-foreground" />
-            </div>
+            </Link>
           </div>
         </SidebarContent>
       </Sidebar>

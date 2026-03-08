@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Globe } from "lucide-react";
 import Link from "next/link";
 import PublicLinks from "../components/links";
+import Image from "next/image";
+import { headers } from "next/headers";
+import VisitCounter from "@/action/visitCounter";
 
 type Props = {
   user: any;
@@ -25,7 +28,8 @@ function mapSocialsToLinks(
   }));
 }
 
-export default function UsernamePage({ user }: Props) {
+export default async function UsernamePage({ user }: Props) {
+  const request_headers = await headers();
   const socialLinks = mapSocialsToLinks(user.socials);
   const cards = mapLinksToCards(socialLinks);
 
@@ -39,6 +43,10 @@ export default function UsernamePage({ user }: Props) {
       </div>
     );
   }
+
+  VisitCounter({ userId: user.id, request_headers }).catch((err) => {
+    console.log("Error in visit counter", err);
+  });
 
   const displayName = user.name || user.username;
   return (
@@ -81,17 +89,17 @@ export default function UsernamePage({ user }: Props) {
                   href={card.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between rounded-xl bg-muted/30 hover:bg-muted transition overflow-hidden p-1 border hover:scale-105"
+                  className="flex items-center justify-between rounded-xl bg-muted/30 hover:bg-muted transition overflow-hidden p-1 border group"
                 >
                   {card.icon === "globe" ? (
-                    <span className="text-2xl flex items-center justify-center h-5 md:w-7 w-5 md:h-7">
+                    <span className="text-3xl flex items-center justify-center h-5 md:w-7 w-5 md:h-7 group-hover:hover:scale-105 transition">
                       <Globe />
                     </span>
                   ) : (
                     <img
                       src={card.icon}
                       alt={card.platformName}
-                      className="h-5 md:h-7 w-5 md:w-7"
+                      className="h-5 md:h-7 w-5 md:w-7 group-hover:hover:scale-105 transition"
                     />
                   )}
                 </a>
@@ -102,7 +110,7 @@ export default function UsernamePage({ user }: Props) {
       </section>
 
       <section className="max-w-xl w-full flex flex-col gap-2">
-        <PublicLinks links={user.links} />
+        <PublicLinks links={user.links} userId={user.id} />
       </section>
     </main>
   );

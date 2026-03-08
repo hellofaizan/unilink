@@ -67,6 +67,9 @@ model User {
   socials    Socials[]
   collection Collection[]
   links      Link[]
+  linkClicks LinkClicks[]
+
+  pageVisits PageVisits[]
 }
 
 model Socials {
@@ -112,11 +115,46 @@ model Link {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  linkClicks LinkClicks[]
+
   user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   collection Collection? @relation(fields: [collectionId], references: [id], onDelete: Cascade)
 
   @@index([userId, position])
   @@index([collectionId, collectionPosition])
+}
+
+model PageVisits {
+  id             String   @id @default(cuid())
+  ip             String?
+  country        String?
+  city           String?
+  userAgent      String?
+  browser        String?
+  browserVersion String?
+  os             String?
+  osVersion      String?
+  referrer       String?
+  referrerURL    String?
+  referrerType   String?
+  device         String?
+  language       String?
+  latitude       Float?
+  longitude      Float?
+  timestamp      DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model LinkClicks {
+  id        String   @id @default(cuid())
+  timestamp DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  linkId String
+  link   Link   @relation(fields: [linkId], references: [id], onDelete: Cascade)
 }
 
 model Waitlist {
