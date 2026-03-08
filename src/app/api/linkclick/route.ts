@@ -13,8 +13,6 @@ export async function POST(request: Request) {
     );
   }
 
-  console.log(`Recording click for userId: ${userId}, linkId: ${linkId}`);
-
   try {
     await db.linkClicks.create({
       data: {

@@ -13,7 +13,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { CreateLink, ReorderLinks } from "@/action/links";
+import { CreateLink, ReorderLinks, DeleteLink } from "@/action/links";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -25,7 +25,14 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { GripVertical, LinkIcon, Loader2, Trash2 } from "lucide-react";
+import {
+  GripVertical,
+  LinkIcon,
+  Loader2,
+  Mouse,
+  MousePointer2,
+  Trash2,
+} from "lucide-react";
 
 const NewLinkSchema = z.object({
   title: z.string().min(1, "Title is required").max(200),
@@ -62,8 +69,6 @@ export default function LinksManager({ initialLinks }: LinksManagerProps) {
         return;
       }
 
-      // Optimistically add the new link to local state.
-      // The new id won't match DB, but on full reload it will sync.
       setLinks((prev) => [
         ...prev,
         {
@@ -77,6 +82,7 @@ export default function LinksManager({ initialLinks }: LinksManagerProps) {
           collectionPosition: null,
           thumbnail: null,
           icon: null,
+          _count: { linkClicks: 0 },
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -88,11 +94,27 @@ export default function LinksManager({ initialLinks }: LinksManagerProps) {
     });
   };
 
+  const handleDeleteLink = (linkId: string) => {
+    setLinks((prev) => prev.filter((l) => l.id !== linkId));
+
+    startTransition(async () => {
+      const res = await DeleteLink(linkId);
+      if (!res.success) {
+        toast.error("Failed to delete link", { position: "top-center" });
+        setLinks((prev) => [
+          ...prev,
+          initialLinks.find((l) => l.id === linkId)!,
+        ]);
+        return;
+      }
+      toast.success("Link deleted!", { position: "top-center" });
+    });
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
 
-    // Compute new order based on current state
     let newOrderIds: string[] | null = null;
 
     setLinks((prev) => {
@@ -107,7 +129,6 @@ export default function LinksManager({ initialLinks }: LinksManagerProps) {
       return reordered;
     });
 
-    // Persist order in the background (separate from the state update)
     if (newOrderIds) {
       startTransition(async () => {
         const res = await ReorderLinks(newOrderIds as string[]);
@@ -120,7 +141,6 @@ export default function LinksManager({ initialLinks }: LinksManagerProps) {
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Header actions */}
       <div className="flex justify-end">
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
@@ -202,20 +222,26 @@ export default function LinksManager({ initialLinks }: LinksManagerProps) {
         </Dialog>
       </div>
 
-      {/* Links list with drag & drop (flat list, like socials) */}
       {links.length === 0 ? (
         <p className="text-sm text-muted-foreground">
           You haven&apos;t added any links yet.
         </p>
       ) : (
-        <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
           <SortableContext
             items={links.map((l) => l.id)}
             strategy={verticalListSortingStrategy}
           >
             <div className="flex flex-col gap-3">
               {links.map((link) => (
-                <SortableLinkRow key={link.id} link={link} />
+                <SortableLinkRow
+                  key={link.id}
+                  link={link}
+                  onDelete={handleDeleteLink}
+                />
               ))}
             </div>
           </SortableContext>
@@ -225,12 +251,12 @@ export default function LinksManager({ initialLinks }: LinksManagerProps) {
   );
 }
 
-// Sortable row component for a single link
 type SortableLinkRowProps = {
-  link: Link;
+  link: any;
+  onDelete: (linkId: string) => void;
 };
 
-function SortableLinkRow({ link }: SortableLinkRowProps) {
+function SortableLinkRow({ link, onDelete }: SortableLinkRowProps) {
   const { id, title, url } = link;
 
   const sortable = useSortable({ id });
@@ -249,7 +275,7 @@ function SortableLinkRow({ link }: SortableLinkRowProps) {
     >
       <button
         type="button"
-        className="cursor-grab h-full w-8 flex items-center justify-center border-r bg-muted/50"
+        className="cursor-grab h-full w-8 flex items-center justify-center border-r"
         aria-label="Reorder"
         {...listeners}
         {...attributes}
@@ -257,7 +283,7 @@ function SortableLinkRow({ link }: SortableLinkRowProps) {
         <GripVertical className="h-4 w-4" />
       </button>
       <div className="flex flex-row items-center justify-between w-full px-4 py-3 gap-3">
-        <div className="flex items-center gap-3 min-w-0">
+        <div className="flex items-center gap-3 min-w-0 flex-1">
           <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
             <LinkIcon className="h-4 w-4" />
           </div>
@@ -274,15 +300,32 @@ function SortableLinkRow({ link }: SortableLinkRowProps) {
           </div>
         </div>
 
-        <button
-          type="button"
-          className="h-8 w-8 inline-flex items-center justify-center rounded-md hover:bg-red-950/60 text-red-500 hover:text-red-400 transition"
-          aria-label="Delete link"
-        >
-          <Trash2 className="h-4 w-4" />
-        </button>
+        <div className="flex items-center flex-1 justify-end gap-4">
+          <p className="text-muted-foreground text-xs flex-1">
+            {new Date(link.createdAt).toLocaleDateString()}
+          </p>
+
+          <div className="flex items-center gap-2 flex-1 justify-end">
+            <p
+              className="flex items-center gap-0 text-muted-foreground text-sm"
+              title="Total Clicks"
+            >
+              {link._count.linkClicks}
+              <MousePointer2 className="h-4 w-4" />
+            </p>
+            <Button
+              type="button"
+              variant={"ghost"}
+              title="Delete link"
+              className="h-8 w-8 inline-flex items-center justify-center rounded-md transition cursor-pointer text-red-500 hover:bg-red-500/10 hover:text-red-500"
+              aria-label="Delete link"
+              onClick={() => onDelete(id)}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
-

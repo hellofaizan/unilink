@@ -11,9 +11,7 @@ const CreateLinkSchema = z.object({
 
 type CreateLinkInput = z.infer<typeof CreateLinkSchema>;
 
-type LinkResult =
-  | { success: true }
-  | { success: false; error: string };
+type LinkResult = { success: true } | { success: false; error: string };
 
 export async function CreateLink(data: CreateLinkInput): Promise<LinkResult> {
   const user = await currentUser();
@@ -36,7 +34,6 @@ export async function CreateLink(data: CreateLinkInput): Promise<LinkResult> {
   const { title, url } = parsed.data;
 
   try {
-    // Find the next position for this user's independent links
     const maxPosition = await db.link.findFirst({
       where: {
         userId: user.id,
@@ -95,6 +92,11 @@ export async function GetLinks() {
       orderBy: {
         position: "asc",
       },
+      include: {
+        _count: {
+          select: { linkClicks: true },
+        },
+      },
     });
 
     return {
@@ -146,3 +148,31 @@ export async function ReorderLinks(order: string[]): Promise<LinkResult> {
   }
 }
 
+export async function DeleteLink(linkId: string): Promise<LinkResult> {
+  const user = await currentUser();
+
+  if (!user?.id) {
+    return {
+      success: false,
+      error: "UNAUTHORIZED",
+    };
+  }
+
+  try {
+    await db.link.delete({
+      where: {
+        id: linkId,
+        userId: user.id,
+        collectionId: null,
+      },
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting link:", error);
+    return {
+      success: false,
+      error: "INTERNAL_ERROR",
+    };
+  }
+}
