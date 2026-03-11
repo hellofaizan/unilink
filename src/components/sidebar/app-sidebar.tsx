@@ -45,11 +45,11 @@ const routes = [
   //   icon: Mail,
   //   href: "/dashboard/emails",
   // },
-  // {
-  //   label: "Ananlytics",
-  //   icon: ChartColumn,
-  //   href: "/dashboard/analytics",
-  // },
+  {
+    label: "Ananlytics",
+    icon: ChartColumn,
+    href: "/dashboard/analytics",
+  },
   {
     label: "Profile",
     icon: UserPen,

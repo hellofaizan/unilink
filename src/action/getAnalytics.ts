@@ -169,14 +169,17 @@ export async function ViewsByDevice({ userId }: { userId: string }) {
       userId,
     },
     _count: {
-      device: true,
+      id: true,
     },
+    orderBy: {
+      _count: {
+        id: "desc",
+      },
+    },
+    take: 8,
   });
 
-  return viewsByDevice.map((entry) => ({
-    device: entry.device || "Unknown",
-    count: entry._count.device,
-  }));
+  return viewsByDevice;
 }
 
 export async function ViewsByBrowser({ userId }: { userId: string }) {
@@ -186,14 +189,17 @@ export async function ViewsByBrowser({ userId }: { userId: string }) {
       userId,
     },
     _count: {
-      browser: true,
+      id: true,
     },
+    orderBy: {
+      _count: {
+        id: "desc",
+      },
+    },
+    take: 8,
   });
 
-  return viewsByBrowser.map((entry) => ({
-    browser: entry.browser || "Unknown",
-    count: entry._count.browser,
-  }));
+  return viewsByBrowser;
 }
 
 export async function ViewsByOS({ userId }: { userId: string }) {
@@ -228,4 +234,63 @@ export async function ViewsByReferrer({ userId }: { userId: string }) {
     referrerType: entry.referrerType || "Unknown",
     count: entry._count.referrerType,
   }));
+}
+
+export async function ViewsPast30Days({ userId }: { userId: string }) {
+  const today = new Date();
+  today.setHours(23, 59, 59, 999);
+
+  const thirtyDaysAgo = new Date(today);
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 29);
+  thirtyDaysAgo.setHours(0, 0, 0, 0);
+
+  const viewsByDay = new Map<string, number>();
+  const uniqueByDay = new Map<string, Set<string>>();
+  const currentDate = new Date(thirtyDaysAgo);
+
+  while (currentDate <= today) {
+    const dayKey = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, "0")}-${String(currentDate.getDate()).padStart(2, "0")}`;
+    viewsByDay.set(dayKey, 0);
+    uniqueByDay.set(dayKey, new Set<string>());
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  const pageVisits = await db.pageVisits.findMany({
+    where: {
+      userId,
+      timestamp: {
+        gte: thirtyDaysAgo,
+        lte: today,
+      },
+    },
+    select: {
+      timestamp: true,
+      ip: true,
+    },
+  });
+
+  pageVisits.forEach((visit) => {
+    const date = new Date(visit.timestamp);
+    const dayKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+    viewsByDay.set(dayKey, (viewsByDay.get(dayKey) || 0) + 1);
+
+    if (visit.ip) {
+      const uniqueSet = uniqueByDay.get(dayKey);
+      if (uniqueSet) {
+        uniqueSet.add(visit.ip);
+      }
+    }
+  });
+
+  const result = Array.from(viewsByDay.entries()).map(([date, views]) => ({
+    date,
+    views,
+    unique: uniqueByDay.get(date)?.size || 0,
+  }));
+
+  result.sort((a, b) => {
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
+
+  return result;
 }
