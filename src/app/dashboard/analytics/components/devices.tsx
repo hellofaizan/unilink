@@ -10,7 +10,6 @@ import {
   Smartphone,
   Tablet,
 } from "lucide-react";
-import { ChartContainer, type ChartConfig } from "@/components/ui/chart";
 import { PieChart } from "@mui/x-charts/PieChart";
 
 type DeviceDatum = {
@@ -41,7 +40,7 @@ export default function Devices({ data }: { data: DeviceDatum[] }) {
 
   const percentage = (value: number) => {
     if (!total) return "0.0";
-    return ((value / total) * 100).toFixed(1);
+    return ((value / total) * 100).toFixed(0);
   };
 
   const icons = (deviceKey: string) => {
@@ -122,7 +121,7 @@ export default function Devices({ data }: { data: DeviceDatum[] }) {
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="font-mono text-xs">
+                <span className="font-mono text-sm">
                   {item.value.toLocaleString()}
                 </span>
                 <Separator orientation="vertical" className="h-4" />

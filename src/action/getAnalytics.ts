@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
+import DomainForReferrer, { ReferrerRow } from "@/lib/domain";
 
 export async function ViewsToday({ userId }: { userId: string }) {
   console.log("Fetching analytics for user ID:", userId);
@@ -152,14 +153,17 @@ export async function ViewsByCountry({ userId }: { userId: string }) {
       userId,
     },
     _count: {
-      country: true,
+      id: true,
     },
+    orderBy: {
+      _count: {
+        id: "desc",
+      },
+    },
+    take: 10,
   });
 
-  return viewsByCountry.map((entry) => ({
-    country: entry.country || "Unknown",
-    count: entry._count.country,
-  }));
+  return viewsByCountry;
 }
 
 export async function ViewsByDevice({ userId }: { userId: string }) {
@@ -220,20 +224,30 @@ export async function ViewsByOS({ userId }: { userId: string }) {
 }
 
 export async function ViewsByReferrer({ userId }: { userId: string }) {
-  const viewsByReferrer = await db.pageVisits.groupBy({
-    by: ["referrerType"],
+  const raw = await db.pageVisits.groupBy({
+    by: ["referrer"],
     where: {
       userId,
     },
     _count: {
-      referrerType: true,
+      id: true,
     },
   });
 
-  return viewsByReferrer.map((entry) => ({
-    referrerType: entry.referrerType || "Unknown",
-    count: entry._count.referrerType,
-  }));
+  const domainMap = new Map<string, number>();
+  for (const row of raw) {
+    const domain = DomainForReferrer(row.referrer);
+    const current = domainMap.get(domain) ?? 0;
+    domainMap.set(domain, current + row._count.id);
+  }
+  const result: ReferrerRow[] = Array.from(domainMap.entries())
+    .map(([referrer, count]) => ({
+      referrer,
+      _count: { id: count },
+    }))
+    .sort((a, b) => b._count.id - a._count.id);
+
+  return result;
 }
 
 export async function ViewsPast30Days({ userId }: { userId: string }) {
