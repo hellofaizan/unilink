@@ -23,6 +23,7 @@ import { signOut } from "next-auth/react";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Suspense } from "react";
+import { ModeToggle } from "../mode-toggle";
 
 const routes = [
   // {
@@ -150,9 +151,10 @@ export function AppSidebar({ ...props }) {
           </div>
 
           <div className="mt-auto border-t rounded-lg overflow-hidden">
+            <ModeToggle />
             <button
               onClick={handleJoinDiscord}
-              className="cursor-pointer h-14 flex items-center gap-x-3 text-sm py-3 px-6 w-full hover:bg-muted hover:text-muted-foreground transition-all"
+              className="cursor-pointer h-12 flex items-center gap-x-3 text-sm py-3 px-6 w-full hover:bg-muted hover:text-muted-foreground transition-all"
             >
               <MessageCircle className="h-5 w-5" />
               <span className="font-medium">Join Discord</span>
@@ -160,7 +162,7 @@ export function AppSidebar({ ...props }) {
 
             <button
               onClick={() => signOut({ callbackUrl: "/dashboard" })}
-              className="cursor-pointer h-14 flex items-center gap-x-3 text-sm py-3 px-6 w-full hover:bg-muted hover:text-muted-foreground transition-all"
+              className="cursor-pointer h-12 flex items-center gap-x-3 text-sm py-3 px-6 w-full hover:bg-muted hover:text-muted-foreground transition-all"
             >
               <LogOut className="h-5 w-5" />
               <span className="font-medium">Log out</span>

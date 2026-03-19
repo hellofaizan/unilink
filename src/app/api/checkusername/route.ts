@@ -5,7 +5,7 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const username = searchParams.get("username")?.toLowerCase();
 
-  if (!username) {
+  if (!username || !/^[a-z0-9-]{1,20}$/.test(username)) {
     return NextResponse.json({ available: false });
   }
 

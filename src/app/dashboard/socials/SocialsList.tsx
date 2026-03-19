@@ -32,7 +32,7 @@ export function SocialList({
   if (cards.length === 0) {
     return (
       <p className="text-sm text-muted-foreground">
-        You haven&apos;t added any social links yet.
+        You haven&apos;t added any social links yet. Click the social icon above to add the social link.
       </p>
     );
   }

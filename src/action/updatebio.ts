@@ -46,7 +46,7 @@ export default async function UpdateProfile(
     if (username && username !== dbUser?.username) {
       const normalized = username.toLowerCase();
 
-      if (!/^[a-z0-9_]{1,20}$/.test(normalized)) {
+      if (!/^[a-z0-9-]{1,20}$/.test(normalized)) {
         error = { success: false, error: "INVALID_USERNAME" };
       }
 

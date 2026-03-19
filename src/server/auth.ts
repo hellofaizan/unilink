@@ -8,6 +8,7 @@ import { getUserById } from "./user";
 import { STATUS, USERROLE } from "@prisma/client";
 import { resend } from "@/email/mail";
 import WelcomeEmail from "@/email/welcomeemail";
+import { generateUniqueUsername } from "@/lib/username";
 
 declare module "next-auth" {
   /**
@@ -39,6 +40,36 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
     error: "/error",
   },
   events: {
+    // Runs when OAuth creates user for first time (e.g. Google signup)
+    async createUser({ user }) {
+      if (!user.id) return;
+
+      const dbUser = await db.user.findUnique({
+        where: { id: user.id },
+        select: { email: true, name: true, username: true, id: true },
+      });
+
+      if (!dbUser || dbUser.username) return;
+
+      const seedName = dbUser.name || dbUser.email.split("@")[0] || "user";
+
+      const username = await generateUniqueUsername(
+        seedName,
+        async (candidate) => {
+          const existing = await db.user.findUnique({
+            where: { username: candidate },
+            select: { id: true },
+          });
+          return Boolean(existing);
+        },
+      );
+
+      await db.user.update({
+        where: { id: user.id },
+        data: { username },
+      });
+    },
+
     async linkAccount({ user }) {
       await db.user.update({
         where: { id: user.id },
@@ -49,8 +80,8 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
     },
   },
   callbacks: {
+    // Allow OAuth without verification
     async signIn({ user, account }) {
-      // Allow OAuth without verification
       if (account?.provider !== "credentials") {
         const existingUser = await getUserById(user.id as string);
 

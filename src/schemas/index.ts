@@ -89,8 +89,8 @@ export const UpdateProfileSchema = z.object({
     .string()
     .min(1, "Username must be atleast 1 character")
     .max(20)
-    .regex(/^[a-zA-Z0-9_]{1,20}$/, {
-      message: "Spaces and special characters are not allowed",
+    .regex(/^[a-zA-Z0-9-]{1,20}$/, {
+      message: "Only letters, numbers, and hyphen are allowed",
     })
     .optional(),
 });
