@@ -21,9 +21,9 @@ export const env = createEnv({
     LEMONSQUEEZY_STORE_ID: z.string(),
     LEMONSQUEEZY_PRODUCT_ID: z.string(),
     LEMONSQUEEZY_WEBHOOK_SECRET: z.string(),
-    WEBHOOK_URL: z.string().url(),
+    WEBHOOK_URL: z.url(),
     RESEND_API_KEY: z.string(),
-    EMAIL_FROM: z.email(),
+    EMAIL_FROM: z.string(),
     UPLOADTHING_TOKEN: z.string(),
   },
 
