@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+unilink is a Next.js application with Prisma + PostgreSQL, NextAuth authentication, and integrations for Google OAuth, LemonSqueezy, Resend, and UploadThing.
 
-## Getting Started
+## Tech Stack
+- Next.js 16
+- React 19
+- TypeScript
+- Prisma ORM
+- PostgreSQL
+- NextAuth (5 beta)
+- Tailwind CSS 4
+- MUI + Recharts for UI/analytics
 
-First, run the development server:
+## Prerequisites
+- Node.js 20+ (recommended: latest LTS)
+- npm 10+
+- PostgreSQL instance (local or hosted)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Project Setup
+```
+# 1) Clone
+git clone <your-repo-url>
+cd unilink
+
+# 2) Install dependencies
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment Variables
+Create a root .env file:
+```
+# required
+DATABASE_URL="postgresql://postgres:1234@localhost:5432/unilink"
+NEXTAUTH_URL="http://localhost:3000"
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+GOOGLE_CLIENT_ID=""
+GOOGLE_CLIENT_SECRET=""
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+LEMONSQUEEZY_API_KEY=""
+LEMONSQUEEZY_STORE_ID=""
+LEMONSQUEEZY_PRODUCT_ID=""
+LEMONSQUEEZY_WEBHOOK_SECRET=""
+WEBHOOK_URL="https://your-domain.com/api/webhooks/lemonsqueezy"
 
-## Learn More
+RESEND_API_KEY=""
+EMAIL_FROM="noreply@your-domain.com"
 
-To learn more about Next.js, take a look at the following resources:
+UPLOADTHING_TOKEN=""
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# required in production, optional in development
+NEXTAUTH_SECRET=""
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Notes:
+- NEXTAUTH_SECRET is optional in development but required in production.
+- NEXTAUTH_URL must be a valid URL in local/dev (for example http://localhost:3000).
 
-## Deploy on Vercel
+## Database Setup
+```
+# apply migrations in development
+npm run db:generate
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# optional: inspect database
+npm run db:studio
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Alternative database commands:
+```
+# push Prisma schema without migrations
+npm run db:push
+
+# apply existing migrations in deployment
+npm run db:migrate
+```
+
+## Run the app
+```
+npm run dev
+```
+Default local URL: `http://localhost:3000`
+
+## Available Scripts
+- npm run dev — start development server
+- npm run build — build production bundle
+- npm run start — run production server
+- npm run db:generate — create/apply Prisma migration in dev
+- npm run db:migrate — apply Prisma migrations in deploy/prod
+- npm run db:push — sync schema to database (no migration files)
+- npm run db:studio — open Prisma Studio
