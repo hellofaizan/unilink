@@ -18,8 +18,8 @@ export const WelcomeEmail = ({ firstName }: WelcomeEmailProps) => (
       <Text style={text}>
         If you ever have a question or need a hand getting started, just reach
         out to us at{" "}
-        <Link href="mailto:support@mohammadfaizan.com">
-          support@mohammadfaizan.com
+        <Link href="mailto:faizancurious@gmail.com">
+          faizancurious@gmail.com
         </Link>{" "}
         – we&apos;re happy to help.
       </Text>
