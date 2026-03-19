@@ -1,5 +1,7 @@
 unilink is a Next.js application with Prisma + PostgreSQL, NextAuth authentication, and integrations for Google OAuth, LemonSqueezy, Resend, and UploadThing.
 
+<img width="2400" height="1321" alt="Banner" src="https://github.com/user-attachments/assets/7eee6fa3-894a-46fe-a460-c53ad14d22b9" />
+
 ## Tech Stack
 - Next.js 16
 - React 19
