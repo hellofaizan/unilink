@@ -25,11 +25,11 @@ import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Suspense } from "react";
 
 const routes = [
-  {
-    label: "Dashboard",
-    icon: LayoutDashboard,
-    href: "/dashboard",
-  },
+  // {
+  //   label: "Dashboard",
+  //   icon: LayoutDashboard,
+  //   href: "/dashboard",
+  // },
   {
     label: "Links",
     icon: LinkIcon,
