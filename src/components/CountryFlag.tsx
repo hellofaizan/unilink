@@ -20,10 +20,21 @@ export default function CountryFlag({ countryName }: { countryName: string }) {
       });
   });
 
+  if (countryName == "United States") {
+    return (
+      <img
+        src={`https://flagsapi.com/US/flat/64.png`}
+        className="h-5 w-6 rounded-md"
+        alt={countryCode}
+        title={`${countryName} (${countryCode})`}
+      />
+    );
+  }
+
   if (countryCode) {
     return (
       <img
-        src={`https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`}
+        src={`https://flagsapi.com/${countryCode}/flat/64.png`}
         className="h-5 w-6 rounded-md"
         alt={countryCode}
         title={`${countryName} (${countryCode})`}

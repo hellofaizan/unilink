@@ -4,7 +4,6 @@ import { db } from "@/lib/db";
 import DomainForReferrer, { ReferrerRow } from "@/lib/domain";
 
 export async function ViewsToday({ userId }: { userId: string }) {
-  console.log("Fetching analytics for user ID:", userId);
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 

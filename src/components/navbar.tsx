@@ -17,19 +17,17 @@ const gugi = Gugi({
 });
 
 export default function Navbar() {
-  const { theme } = useTheme();
   return (
     <div className="w-full fixed flex items-center max-w-6xl justify-between py-4 md:p-6">
       <div className="flex items-center gap-1">
         <Image
           src={"/logos/banner.svg"}
           alt="Unilink"
+          className="w-50 h-auto object-contain"
           height={0}
-          width={160}
+          width={0}
           priority
-          unoptimized
         />
-        {/* <p className={cn(`font-bold text-3xl`, gugi.className)}>UNILINK</p> */}
       </div>
 
       <div className="flex items-center gap-4">

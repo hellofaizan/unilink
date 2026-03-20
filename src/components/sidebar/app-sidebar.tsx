@@ -47,7 +47,7 @@ const routes = [
   //   href: "/dashboard/emails",
   // },
   {
-    label: "Ananlytics",
+    label: "Analytics",
     icon: ChartColumn,
     href: "/dashboard/analytics",
   },
