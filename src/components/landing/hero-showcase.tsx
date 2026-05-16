@@ -1,11 +1,13 @@
 "use client";
 
 import { BlurFade } from "@/components/ui/blur-fade";
+import { DotPattern } from "@/components/ui/dot-pattern";
+import { RetroGrid } from "@/components/ui/retro-grid";
 import { ShineBorder } from "@/components/ui/shine-border";
+import { motion } from "motion/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-/** Add your screenshot at public/landing/dashboard-screenshot.png */
 export const LANDING_SCREENSHOT = "/landing/dashboard-preview.png";
 const FALLBACK_SCREENSHOT = "/previewbanner.svg";
 
@@ -20,16 +22,35 @@ export function HeroShowcase() {
   }, []);
 
   return (
-    <section className="w-full pb-8 pt-2 md:pb-14 md:pt-4">
-      <div className="mx-auto max-w-6xl px-2 md:px-4">
+    <section className="relative w-full overflow-hidden pb-8 pt-2 md:pb-14 md:pt-4">
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <RetroGrid className="opacity-40 [mask-image:radial-gradient(ellipse_at_center,white,transparent_80%)]" />
+        <DotPattern
+          width={18}
+          height={18}
+          cr={1}
+          className="text-primary/10 [mask-image:radial-gradient(ellipse_at_center,white,transparent_70%)]"
+        />
+      </div>
+
+      <div className="relative mx-auto max-w-6xl px-2 md:px-4">
         <BlurFade inView delay={0.1}>
-          {" "}
           <div className="mb-6 text-center md:mb-8">
+            <p className="text-sm font-medium uppercase tracking-widest text-primary">
+              Product preview
+            </p>
             <h2 className="mt-2 text-2xl font-bold tracking-tight md:text-3xl">
               Your link in bio, beautifully built
             </h2>
           </div>
-          <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-card p-2 shadow-[0_24px_80px_rgba(15,23,42,0.12)] md:rounded-3xl md:p-3 dark:shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
+
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
+            className="relative overflow-hidden rounded-2xl border border-border/60 bg-card p-2 shadow-[0_24px_80px_rgba(15,23,42,0.12)] md:rounded-3xl md:p-3 dark:shadow-[0_24px_80px_rgba(0,0,0,0.45)]"
+          >
             <ShineBorder
               shineColor={[
                 "oklch(0.546 0.245 262.881 / 0.35)",
@@ -40,14 +61,14 @@ export function HeroShowcase() {
               duration={12}
             />
             <div className="relative overflow-hidden rounded-xl bg-muted/30 md:rounded-2xl">
-              <div className="flex items-center gap-2 border-b border-border/50 bg-card/80 px-4 py-3">
+              <div className="flex items-center gap-2 border-b border-border/50 bg-card/80 px-4 py-3 backdrop-blur-sm">
                 <span className="h-2.5 w-2.5 rounded-full bg-red-400/90" />
                 <span className="h-2.5 w-2.5 rounded-full bg-amber-400/90" />
                 <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/90" />
                 <span className="ml-3 flex-1 rounded-md bg-muted px-3 py-1 text-center text-xs text-muted-foreground">
                   unilink.app/dashboard
                 </span>
-              </div>{" "}
+              </div>
               <div className="relative aspect-16/10 w-full">
                 <Image
                   src={src}
@@ -61,7 +82,7 @@ export function HeroShowcase() {
                 />
               </div>
             </div>
-          </div>
+          </motion.div>
         </BlurFade>
       </div>
     </section>

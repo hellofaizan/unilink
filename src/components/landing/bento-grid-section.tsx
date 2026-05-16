@@ -10,7 +10,7 @@ import {
   Share2,
   Smartphone,
 } from "lucide-react";
-import Image from "next/image";
+import { motion } from "motion/react";
 import type { LucideIcon } from "lucide-react";
 
 type BentoItem = {
@@ -70,9 +70,11 @@ function BentoCard({ item, index }: { item: BentoItem; index: number }) {
       delay={0.05 * index}
       className={cn("h-full", item.className)}
     >
-      <div
+      <motion.div
+        whileHover={{ y: -2, scale: 1.01 }}
+        transition={{ type: "spring", stiffness: 400, damping: 25 }}
         className={cn(
-          "group flex h-full flex-col overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm transition-shadow hover:shadow-md",
+          "group flex h-full flex-col overflow-hidden rounded-2xl border border-border/60 bg-card/95 shadow-sm backdrop-blur-sm transition-shadow hover:border-primary/25 hover:shadow-lg",
           item.hasMedia ? "min-h-[320px]" : "min-h-[140px] md:min-h-[160px]",
         )}
       >
@@ -116,7 +118,7 @@ function BentoCard({ item, index }: { item: BentoItem; index: number }) {
             </div>
           </div>
         )}
-      </div>
+      </motion.div>
     </BlurFade>
   );
 }

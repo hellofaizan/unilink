@@ -3,7 +3,6 @@
 import { BlurFade } from "@/components/ui/blur-fade";
 import Image from "next/image";
 import Link from "next/link";
-import { Heart } from "lucide-react";
 
 const footerLinks = {
   Product: [
@@ -23,13 +22,8 @@ const footerLinks = {
 
 export function LandingFooter() {
   return (
-    <footer className="relative mt-8 w-full border-t border-border/60 bg-muted/20">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/40 to-transparent"
-      />
-
-      <div className="mx-auto max-w-6xl px-4 py-14 md:px-8 md:py-16">
+    <footer className="relative w-full border-t border-zinc-800 bg-zinc-950 text-zinc-300">
+      <div className="mx-auto max-w-6xl px-4 py-12 md:px-8 md:py-14">
         <BlurFade inView>
           <div className="grid gap-10 md:grid-cols-[1.4fr_2fr]">
             <div className="space-y-4">
@@ -41,9 +35,11 @@ export function LandingFooter() {
                   height={40}
                   unoptimized
                 />
-                <span className="text-xl font-bold tracking-tight">Unilink</span>
+                <span className="text-xl font-bold tracking-tight text-white">
+                  Unilink
+                </span>
               </Link>
-              <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
+              <p className="max-w-xs text-sm leading-relaxed text-zinc-500">
                 Your rich, modern link in bio. Share everything you create in
                 one beautiful place.
               </p>
@@ -52,19 +48,23 @@ export function LandingFooter() {
             <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
               {Object.entries(footerLinks).map(([group, links]) => (
                 <div key={group}>
-                  <p className="text-sm font-semibold text-foreground">{group}</p>
+                  <p className="text-sm font-semibold text-white">{group}</p>
                   <ul className="mt-4 space-y-3">
                     {links.map((link) => (
                       <li key={link.label}>
                         <Link
                           href={link.href}
-                          target={"external" in link && link.external ? "_blank" : undefined}
+                          target={
+                            "external" in link && link.external
+                              ? "_blank"
+                              : undefined
+                          }
                           rel={
                             "external" in link && link.external
                               ? "noopener noreferrer"
                               : undefined
                           }
-                          className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                          className="text-sm text-zinc-500 transition-colors hover:text-white"
                         >
                           {link.label}
                         </Link>
@@ -76,12 +76,19 @@ export function LandingFooter() {
             </div>
           </div>
 
-          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border/50 pt-8 sm:flex-row">
-            <p className="text-xs text-muted-foreground">
+          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-zinc-800 pt-8 sm:flex-row">
+            <p className="text-xs text-zinc-600">
               © {new Date().getFullYear()} Unilink. All rights reserved.
             </p>
-            <p className="flex items-center gap-1 text-xs text-muted-foreground">
-              Designed by <Link href="https://mohammadfaizan.com" target="_blank" className="text-primary hover:underline">Mohammad Faizaan</Link>
+            <p className="text-xs text-zinc-600">
+              Designed by{" "}
+              <Link
+                href="https://mohammadfaizan.com"
+                target="_blank"
+                className="text-zinc-400 hover:text-white hover:underline"
+              >
+                Mohammad Faizaan
+              </Link>
             </p>
           </div>
         </BlurFade>
