@@ -1,14 +1,11 @@
-import Navbar from "@/components/navbar";
 import React from "react";
 
-export default function AuthLayout({
+export default function LandingLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex justify-center w-full">
-      {children}
-    </div>
+    <div className="flex w-full flex-col items-center">{children}</div>
   );
 }
